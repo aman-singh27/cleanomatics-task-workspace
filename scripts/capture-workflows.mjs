@@ -34,14 +34,12 @@ try {
   const dialog = page.getByRole("dialog");
   const search = page.getByLabel("Search tasks");
   const row = () =>
-    page
-      .getByTestId("task-row")
-      .filter({
-        has: page.getByRole("button", {
-          name: `View task ${ownedTitle}`,
-          exact: true,
-        }),
-      });
+    page.getByTestId("task-row").filter({
+      has: page.getByRole("button", {
+        name: `View task ${ownedTitle}`,
+        exact: true,
+      }),
+    });
   const capture = async (name) => {
     await page.screenshot({
       path: `${directory}/${name}.png`,
