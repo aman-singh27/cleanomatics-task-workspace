@@ -1,0 +1,32 @@
+{
+  "name": "cleanomatics-task-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "concurrently -k -n API,WEB -c cyan,magenta \"npm run dev --workspace backend\" \"npm run dev --workspace frontend\"",
+    "build": "npm run build --workspace frontend",
+    "typecheck": "npm run typecheck --workspace frontend",
+    "test": "npm run test --workspaces --if-present",
+    "test:coverage": "npm run test:coverage --workspaces --if-present",
+    "test:e2e": "playwright test",
+    "check": "npm run typecheck && npm run build && npm run test:coverage && npm run test:e2e",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "screenshots": "node scripts/capture-screenshots.mjs"
+  },
+  "overrides": {
+    "shell-quote": "^1.12.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0",
+    "concurrently": "^9.2.1",
+    "prettier": "^3.9.9"
+  }
+}

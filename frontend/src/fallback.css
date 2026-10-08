@@ -1,0 +1,81 @@
+.utility-page {
+  min-height: 100dvh;
+  background: var(--canvas);
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+}
+.utility-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px clamp(20px, 5vw, 72px);
+  border-bottom: 1px solid var(--line);
+}
+.utility-header a,
+.utility-footer a {
+  color: var(--ink);
+  font-size: 13px;
+  text-decoration: none;
+}
+.utility-header a:hover,
+.utility-footer a:hover {
+  text-decoration: underline;
+}
+.utility-brand {
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.utility-brand span {
+  display: block;
+  font-size: 11px;
+  margin-top: 5px;
+  letter-spacing: 0;
+  font-weight: 400;
+  color: var(--muted);
+}
+.utility-content {
+  width: min(100% - 40px, 720px);
+  margin: clamp(44px, 8vh, 96px) auto;
+  padding: 0;
+  flex: 1;
+}
+.utility-label {
+  color: var(--primary);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+}
+.utility-content h1 {
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(28px, 5vw, 42px);
+  line-height: 1.2;
+  margin: 12px 0 22px;
+}
+.utility-content h2 {
+  font-size: 18px;
+  margin: 32px 0 10px;
+}
+.utility-content p {
+  font-size: 15px;
+  line-height: 1.8;
+  max-width: 66ch;
+}
+.utility-content .utility-date {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 0 0 28px;
+}
+.utility-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+.utility-footer {
+  display: flex;
+  gap: 24px;
+  padding: 22px clamp(20px, 5vw, 72px);
+  border-top: 1px solid var(--line);
+}

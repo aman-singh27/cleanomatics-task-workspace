@@ -1,0 +1,15 @@
+node_modules/
+frontend/dist/
+coverage/
+frontend/coverage/
+backend/coverage/
+.env
+.env.local
+**/.env
+**/.env.local
+test-results/
+playwright-report/
+*.log
+*.tsbuildinfo
+.vitest/
+.DS_Store
