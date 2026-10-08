@@ -1,5 +1,11 @@
-import { describe, expect, it } from "vitest";
-import { selectTasks, validateTask, formatDate, type Task } from "./tasks";
+import { describe, expect, it, vi } from "vitest";
+import {
+  selectTasks,
+  validateTask,
+  formatDate,
+  isOverdue,
+  type Task,
+} from "./tasks";
 const task = (id: string, overrides = {}): Task => ({
   id,
   title: "Scan garments",
@@ -12,6 +18,48 @@ const task = (id: string, overrides = {}): Task => ({
   ...overrides,
 });
 describe("task selection", () => {
+  it("finds only past-due unfinished tasks and combines search and priority", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 9, 8, 12));
+    try {
+      const tasks = [
+        task("late-pending", { dueDate: "2026-10-07", priority: "high" }),
+        task("late-progress", {
+          title: "Delivery",
+          description: "Scan receipts",
+          dueDate: "2026-10-06",
+          status: "in_progress",
+        }),
+        task("late-completed", { dueDate: "2026-10-07", status: "completed" }),
+        task("today", { dueDate: "2026-10-08" }),
+        task("future", { dueDate: "2026-10-09" }),
+        task("undated"),
+      ];
+      expect(tasks.map(isOverdue)).toEqual([
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+      ]);
+      expect(
+        selectTasks(tasks, "", "overdue", "all", "due-asc").map((t) => t.id),
+      ).toEqual(["late-progress", "late-pending"]);
+      expect(
+        selectTasks(tasks, "scan", "overdue", "high", "created-desc").map(
+          (t) => t.id,
+        ),
+      ).toEqual(["late-pending"]);
+      expect(
+        selectTasks(tasks, "receipts", "overdue", "all", "created-desc").map(
+          (t) => t.id,
+        ),
+      ).toEqual(["late-progress"]);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
   it("searches descriptions and combines filters before pagination", () => {
     const tasks = [
       task("a"),

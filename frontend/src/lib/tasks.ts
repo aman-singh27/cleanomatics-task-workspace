@@ -1,6 +1,7 @@
 export const statuses = ["pending", "in_progress", "completed"] as const;
 export const priorities = ["low", "medium", "high"] as const;
 export type Status = (typeof statuses)[number];
+export type TaskView = Status | "all" | "overdue";
 export type Priority = (typeof priorities)[number];
 export interface TaskInput {
   title: string;
@@ -29,7 +30,7 @@ export const priorityLabel: Record<Priority, string> = {
 export function selectTasks(
   tasks: Task[],
   query: string,
-  status: Status | "all",
+  status: TaskView,
   priority: Priority | "all",
   sort: Sort,
 ) {
@@ -40,7 +41,8 @@ export function selectTasks(
       (task) =>
         (!text ||
           `${task.title} ${task.description}`.toLowerCase().includes(text)) &&
-        (status === "all" || task.status === status) &&
+        (status === "all" ||
+          (status === "overdue" ? isOverdue(task) : task.status === status)) &&
         (priority === "all" || task.priority === priority),
     )
     .sort((a, b) => {

@@ -44,6 +44,78 @@ beforeEach(() => {
   vi.mocked(taskApi.remove).mockResolvedValue({ id: "1", message: "Deleted" });
 });
 describe("workspace journeys", () => {
+  it("opens the overdue queue, clears unrelated filters, resets pages, and removes completed work", async () => {
+    const records = Array.from({ length: 8 }, (_, index) => ({
+      ...fixture,
+      id: String(index),
+      title: `Late task ${index}`,
+      dueDate: "2000-01-01",
+    }));
+    vi.mocked(taskApi.update).mockImplementation(async (id, data) => ({
+      ...records.find((task) => task.id === id)!,
+      ...data,
+    }));
+    vi.mocked(taskApi.list).mockResolvedValue([
+      ...records,
+      {
+        ...fixture,
+        id: "done",
+        title: "Finished task",
+        status: "completed",
+        dueDate: "2000-01-01",
+      },
+      { ...fixture, id: "future", title: "Future task", dueDate: "9999-01-01" },
+      { ...fixture, id: "undated", title: "Undated task", dueDate: null },
+    ]);
+    const user = userEvent.setup();
+    render(<App />);
+    await screen.findByRole("button", { name: "View task Late task 0" });
+    await user.type(screen.getByRole("searchbox"), "missing");
+    await user.selectOptions(screen.getByLabelText("Priority filter"), "low");
+    const overdue = screen.getByRole("button", { name: "Overdue 8" });
+    await user.click(overdue);
+    expect(overdue).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("searchbox")).toHaveValue("");
+    expect(screen.getByLabelText("Priority filter")).toHaveValue("all");
+    expect(screen.getByLabelText("Status filter")).toHaveValue("overdue");
+    await screen.findByRole("button", { name: "View task Late task 0" });
+    expect(
+      screen.queryByRole("button", { name: "View task Finished task" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "View task Future task" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "View task Undated task" }),
+    ).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Next page" }));
+    expect(screen.getByText("Page 2 of 2")).toBeVisible();
+    await user.click(overdue);
+    expect(screen.getByText("Page 1 of 2")).toBeVisible();
+    await user.selectOptions(
+      screen.getByLabelText("Status for Late task 0"),
+      "completed",
+    );
+    await waitFor(() =>
+      expect(
+        screen.queryByRole("button", { name: "View task Late task 0" }),
+      ).not.toBeInTheDocument(),
+    );
+    expect(screen.getByRole("button", { name: "Overdue 7" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+    expect(taskApi.update).toHaveBeenCalledWith(
+      "0",
+      expect.objectContaining({ status: "completed", dueDate: "2000-01-01" }),
+    );
+    await user.click(screen.getByRole("button", { name: "All tasks 11" }));
+    await user.selectOptions(screen.getByLabelText("Status filter"), "overdue");
+    expect(screen.getByRole("button", { name: "Overdue 7" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+  });
   it("keeps status navigation in dashboard metrics and out of sidebar", async () => {
     render(<App />);
     await screen.findByRole("button", { name: "View task Prepare launch" });

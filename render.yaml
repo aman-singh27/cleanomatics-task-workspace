@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: cleanomatics-task-api
+    runtime: node
+    region: singapore
+    plan: free
+    branch: main
+    numInstances: 1
+    buildCommand: npm ci --omit=dev
+    startCommand: npm run start --workspace backend
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 22.17.0
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: REQUEST_LOGGING
+        value: "true"
+      - key: SEED_DEMO_DATA
+        value: "true"
+      - key: CORS_ORIGINS
+        sync: false

@@ -299,6 +299,8 @@ describe("service and config", () => {
   it("defaults local config and reads explicit overrides", () => {
     expect(readConfig({})).toEqual({
       port: 4000,
+      host: "0.0.0.0",
+      requestLogging: false,
       origins: ["http://localhost:5173", "http://127.0.0.1:5173"],
       seed: true,
     });
@@ -310,6 +312,8 @@ describe("service and config", () => {
       }),
     ).toEqual({
       port: 5000,
+      host: "0.0.0.0",
+      requestLogging: false,
       origins: ["https://a.example", "https://b.example"],
       seed: false,
     });

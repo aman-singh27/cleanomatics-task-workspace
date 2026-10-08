@@ -55,6 +55,13 @@ export function RouteBoundary({
           registration, or authentication. Anyone who can reach the same API can
           view and change its tasks. Use sample data when evaluating the demo.
         </p>
+        <h2>Operational logs and hosting</h2>
+        <p>
+          The hosted API logs a generated request ID, HTTP method, route type,
+          response status, and duration to help diagnose failures. Application
+          logs omit task content, query values, and request headers. Vercel and
+          Render may also process connection metadata when serving requests.
+        </p>
         <h2>Your controls</h2>
         <p>
           You can inspect, edit, and delete task records through the workspace.

@@ -5,7 +5,7 @@ import {
   selectTasks,
   type Task,
   type TaskInput,
-  type Status,
+  type TaskView,
   type Priority,
   type Sort,
 } from "./lib/tasks";
@@ -35,7 +35,7 @@ export default function App() {
   const { tasks, loading, error, load, save, remove } = useTasks();
   const [query, setQuery] = useState("");
   const debounced = useDebounce(query);
-  const [status, setStatus] = useState<Status | "all">("all");
+  const [status, setStatus] = useState<TaskView>("all");
   const [priority, setPriority] = useState<Priority | "all">("all");
   const [sort, setSort] = useState<Sort>("created-desc");
   const [page, setPage] = useState(1);

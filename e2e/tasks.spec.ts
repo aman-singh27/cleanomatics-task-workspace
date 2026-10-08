@@ -640,6 +640,118 @@ test("dashboard metrics reset pagination even when selecting current status", as
   ).toHaveCount(0);
 });
 
+test("overdue queue finds unfinished work, resets filters and pages, and removes completed tasks through the real API", async ({
+  page,
+  request,
+}) => {
+  for (let index = 0; index < 8; index++) {
+    const response = await request.post(`${api}/tasks`, {
+      data: {
+        ...sample,
+        title: `Overdue operations ${index}`,
+        status: index % 2 ? "in_progress" : "pending",
+        dueDate: "2000-01-01",
+      },
+    });
+    expect(response.status()).toBe(201);
+  }
+  for (const data of [
+    {
+      title: "Completed past-due task",
+      status: "completed",
+      dueDate: "2000-01-01",
+    },
+    { title: "Future task", status: "pending", dueDate: "9999-01-01" },
+    { title: "Undated task", status: "pending", dueDate: null },
+  ]) {
+    expect(
+      (
+        await request.post(`${api}/tasks`, { data: { ...sample, ...data } })
+      ).status(),
+    ).toBe(201);
+  }
+  await page.goto("/");
+  const overdue = page.getByRole("button", { name: "Overdue 8", exact: true });
+  await expect(overdue).toBeVisible();
+  await page
+    .getByRole("searchbox", { name: "Search tasks" })
+    .fill("missing-task");
+  await page.getByLabel("Priority filter").selectOption("low");
+  await expect(page.getByText("No tasks match your filters")).toBeVisible();
+  await overdue.click();
+  await expect(overdue).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("searchbox")).toHaveValue("");
+  await expect(page.getByLabel("Priority filter")).toHaveValue("all");
+  await expect(page.getByLabel("Status filter")).toHaveValue("overdue");
+  await expect(page.getByTestId("task-row")).toHaveCount(6);
+  for (const title of [
+    "Completed past-due task",
+    "Future task",
+    "Undated task",
+  ])
+    await expect(
+      page.getByRole("button", { name: `View task ${title}`, exact: true }),
+    ).toHaveCount(0);
+  await page.getByRole("button", { name: "Next page" }).click();
+  await expect(page.getByText("Page 2 of 2")).toBeVisible();
+  await expect(page.getByTestId("task-row")).toHaveCount(2);
+  await overdue.click();
+  await expect(page.getByText("Page 1 of 2")).toBeVisible();
+  const row = page.getByTestId("task-row").first();
+  const id = await row.getAttribute("data-task-id");
+  const original = await (await request.get(`${api}/tasks/${id}`)).json();
+  const status = row.getByRole("combobox", {
+    name: `Status for ${original.title}`,
+    exact: true,
+  });
+  expect(
+    await status
+      .locator("option")
+      .evaluateAll((options) =>
+        options.map((option) => (option as HTMLOptionElement).value),
+      ),
+  ).toEqual(["pending", "in_progress", "completed"]);
+  await status.focus();
+  await status.selectOption("completed");
+  await expect(
+    page.getByRole("button", {
+      name: `View task ${original.title}`,
+      exact: true,
+    }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "Overdue 7", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await expect(
+    page.getByRole("button", { name: "Completed 2", exact: true }),
+  ).toBeVisible();
+  await expect(page.getByLabel("Status filter")).toBeFocused();
+  const updated = await (await request.get(`${api}/tasks/${id}`)).json();
+  expect(updated).toMatchObject({
+    id: original.id,
+    title: original.title,
+    description: original.description,
+    priority: original.priority,
+    dueDate: original.dueDate,
+    createdAt: original.createdAt,
+    status: "completed",
+  });
+  const invalidStatus = await request.put(`${api}/tasks/${id}`, {
+    data: { ...sample, status: "overdue" },
+  });
+  expect(invalidStatus.status()).toBe(400);
+  expect(await (await request.get(`${api}/tasks/${id}`)).json()).toEqual(
+    updated,
+  );
+  await page.getByRole("button", { name: "All tasks 11", exact: true }).click();
+  await page.getByLabel("Status filter").selectOption("overdue");
+  await expect(
+    page.getByRole("button", { name: "Overdue 7", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+  for (const task of await (await request.get(`${api}/tasks`)).json())
+    expect(["pending", "in_progress", "completed"]).toContain(task.status);
+});
+
 test("mobile navigation contains keyboard focus and returns it after every close path", async ({
   page,
 }) => {

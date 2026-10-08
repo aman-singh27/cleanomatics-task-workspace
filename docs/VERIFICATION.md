@@ -1,6 +1,14 @@
 # Local verification report
 
-Verified on 8 October 2026 on Windows using Node.js 22.17.0 and npm 10.9.2. This report records local execution. User manual approval, GitHub publication, hosting and employer submission remain pending.
+Verified on 8 October 2026 on Windows using Node.js 22.17.0 and npm 10.9.2. The user has completed manual review and authorized GitHub publication and hosting. Employer email has not been sent. Hosted verification is recorded separately below when executed.
+
+## Publication revision checks
+
+`npm run check` passed after the operational middleware, graceful shutdown, and overdue queue additions: 73 frontend tests, 57 API tests, and 19 Chromium scenarios (149 total). Frontend coverage: statements 90.06%, branches 84.67%, functions 93.42%, lines 91.21%. Backend coverage: 100% across all four measures and 11 covered source files; process bootstrap is excluded. `npm audit --omit=dev` reported zero vulnerabilities. Updated six screenshots captured successfully with no page errors or mobile overflow.
+
+The new real API scenario covers overdue inclusion/exclusion, clearing search/priority through the metric, resetting pagination, inline completion removing the task, focus recovery, preserving editable fields, and rejecting `overdue` as an API status. Overdue is a derived view; stored status enums remain unchanged. Privacy copy now describes application metadata logging and hosting providers.
+
+The results below describe the earlier local review revision and are retained as the review history.
 
 ## Executed checks
 

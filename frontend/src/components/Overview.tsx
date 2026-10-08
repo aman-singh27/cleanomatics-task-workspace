@@ -1,5 +1,5 @@
 import { CheckCheck, CircleDot, Layers3, Clock3, Plus } from "lucide-react";
-import { isOverdue, type Task, type Status } from "../lib/tasks";
+import { isOverdue, type Task, type TaskView } from "../lib/tasks";
 export function Overview({
   tasks,
   loading,
@@ -10,8 +10,8 @@ export function Overview({
   tasks: Task[];
   loading: boolean;
   onNew: () => void;
-  status: Status | "all";
-  onView: (status: Status | "all") => void;
+  status: TaskView;
+  onView: (status: TaskView) => void;
 }) {
   const complete = tasks.filter((task) => task.status === "completed").length;
   const progress = tasks.length
@@ -48,6 +48,7 @@ export function Overview({
       icon: Clock3,
       className: "overdue",
       note: "Past due and unfinished",
+      filter: "overdue" as const,
     },
   ];
   return (
@@ -84,7 +85,7 @@ export function Overview({
                   <p>{note}</p>
                 </>
               );
-              return filter ? (
+              return (
                 <button
                   type="button"
                   key={label}
@@ -95,10 +96,6 @@ export function Overview({
                 >
                   {content}
                 </button>
-              ) : (
-                <div className={`metric ${className}`} key={label}>
-                  {content}
-                </div>
               );
             },
           )}

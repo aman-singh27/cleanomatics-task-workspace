@@ -10,6 +10,9 @@ export function readConfig(env = process.env) {
   }
   return {
     port,
+    host: env.HOST ?? "0.0.0.0",
+    requestLogging:
+      env.NODE_ENV === "production" && env.REQUEST_LOGGING !== "false",
     origins: env.CORS_ORIGINS
       ? env.CORS_ORIGINS.split(",")
           .map((origin) => origin.trim())

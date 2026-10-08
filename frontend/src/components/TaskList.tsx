@@ -21,6 +21,7 @@ import {
   priorities,
   type Task,
   type Status,
+  type TaskView,
   type Priority,
   type Sort,
 } from "../lib/tasks";
@@ -34,8 +35,8 @@ interface Props {
   onRetry: () => void;
   query: string;
   onQuery: (value: string) => void;
-  status: Status | "all";
-  onStatus: (value: Status | "all") => void;
+  status: TaskView;
+  onStatus: (value: TaskView) => void;
   priority: Priority | "all";
   onPriority: (value: Priority | "all") => void;
   sort: Sort;
@@ -114,7 +115,7 @@ export function TaskList(props: Props) {
           <select
             aria-label="Status filter"
             value={status}
-            onChange={(e) => onStatus(e.target.value as Status | "all")}
+            onChange={(e) => onStatus(e.target.value as TaskView)}
           >
             <option value="all">All statuses</option>
             {statuses.map((value) => (
@@ -122,6 +123,7 @@ export function TaskList(props: Props) {
                 {statusLabel[value]}
               </option>
             ))}
+            <option value="overdue">Overdue tasks</option>
           </select>
           <select
             aria-label="Priority filter"

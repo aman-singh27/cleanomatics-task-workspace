@@ -7,19 +7,28 @@ import { createDemoTasks } from "./services/demo-tasks.js";
 import { createTaskRouter } from "./routes/task-routes.js";
 import { errorHandler, notFound } from "./middleware/errors.js";
 import { openapi } from "./openapi.js";
+import {
+  createOperationsMiddleware,
+  writeStructuredLog,
+} from "./middleware/operations.js";
 
 export function createApp({
   seed = true,
   origins = DEFAULT_ORIGINS,
   service,
+  requestLogging = false,
+  logger = writeStructuredLog,
 } = {}) {
   const app = express();
   app.disable("x-powered-by");
+  app.disable("etag");
+  app.use(createOperationsMiddleware({ requestLogging, logger }));
   app.use(
     cors({
       origin: (origin, callback) =>
         callback(null, !origin || origins.includes(origin)),
       methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      exposedHeaders: ["X-Request-Id"],
     }),
   );
   app.use(express.json({ limit: "100kb", strict: false }));
