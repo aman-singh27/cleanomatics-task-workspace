@@ -2,41 +2,41 @@
 
 Source: `C:/Users/Aman Singh/Downloads/Full_Stack_Developer_Assignment_Task_Management_System.docx`, extracted from `word/document.xml` on 2026-10-08. The document supplies project requirements; it does not authorize external publication or communication.
 
-The user asks for a planned, independently reviewed, visually polished implementation, tests, and a working local preview. Deployment, GitHub publication, and employer submission remain deferred until the user manually verifies the application and explicitly requests those actions.
+The user requested a planned, independently reviewed, visually polished implementation, tests, and a working local preview. Manual approval has now been received, and the user subsequently authorized publication and hosting. The earlier local-review-only gate is superseded. Source is public at [GitHub](https://github.com/aman-singh27/cleanomatics-task-workspace), with a [live frontend](https://cleanomatics-task-workspace.vercel.app) and [Render API](https://cleanomatics-task-api.onrender.com/api/tasks). The hosted verifier confirmed all 14 hosted groups on `74b5f3e`, including Swagger through the frontend proxy and Execute GET 200. Employer email has not been sent.
 
 ## Required requirements
 
-| ID  | Source            | Requirement                                                                           | Acceptance evidence                                                                         | Status                          |
-| --- | ----------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------- |
-| R01 | 1                 | React or Next.js frontend                                                             | React application builds and opens locally                                                  | Verified                        |
-| R02 | 1                 | Node.js + Express preferred, or Python + FastAPI                                      | Express HTTP API starts from documented command                                             | Verified                        |
-| R03 | 1, 6, constraints | Task data in backend memory only; no database or Firebase                             | Store is an array/object/Map; restart resets task data; no task browser persistence         | Verified                        |
-| R04 | 1                 | REST API and Git + GitHub                                                             | Endpoint contracts below; local Git review; GitHub publication deferred                     | Local verified; remote deferred |
-| R05 | 2A                | Dashboard displays task list                                                          | Dashboard renders tasks returned by API                                                     | Verified                        |
-| R06 | 2A                | List shows title, description, status, priority, created date                         | Desktop and mobile browser assertions/screenshots                                           | Verified                        |
-| R07 | 2A                | Create, edit, view, delete actions                                                    | Complete CRUD through UI with API-backed state refresh                                      | Verified                        |
-| R08 | 2A, 8             | Loading, success, empty, error states                                                 | Browser tests for delayed response, mutation success, no data, failed response/retry        | Verified                        |
-| R09 | 2A                | Responsive desktop/mobile                                                             | Browser checks at desktop and mobile widths; no horizontal overflow or inaccessible actions | Verified                        |
-| R10 | 2B                | Create form includes title, description, status, priority, due date                   | All five inputs visible and usable                                                          | Verified                        |
-| R11 | 2B, 8             | Title and description required; client validation before submission                   | Empty and whitespace-only inputs rejected; inline accessible errors                         | Verified                        |
-| R12 | 2C                | Edit all five user-editable fields                                                    | Persist changes via PUT; list/details reflect updated values                                | Verified                        |
-| R13 | 2D                | Individual complete details in page/modal/drawer                                      | Fetch selected task; display every task field with understandable dates                     | Verified                        |
-| R14 | 3                 | Task contains id, title, description, status, priority, dueDate, createdAt, updatedAt | API shape assertions; server-generated identity/timestamps                                  | Verified                        |
-| R15 | 3                 | Exact status enum: pending, in_progress, completed                                    | Invalid status rejected; UI labels map to enum                                              | Verified                        |
-| R16 | 3                 | Exact priority enum: low, medium, high                                                | Invalid priority rejected                                                                   | Verified                        |
-| R17 | 4                 | GET /api/tasks returns 200                                                            | Supertest list assertions                                                                   | Verified                        |
-| R18 | 4                 | GET /api/tasks/:id returns 200 or 404                                                 | Existing and missing task tests                                                             | Verified                        |
-| R19 | 4                 | POST /api/tasks returns 201 or 400                                                    | Valid creation and invalid body tests                                                       | Verified                        |
-| R20 | 4                 | PUT /api/tasks/:id returns 200 or 404                                                 | Existing and missing task tests; invalid body additionally returns 400                      | Verified                        |
-| R21 | 4                 | DELETE /api/tasks/:id returns 200 or 404                                              | Existing delete returns 200, repeated delete returns 404                                    | Verified                        |
-| R22 | 6                 | Clean routes/controllers/services separation                                          | Review dedicated modules and responsibilities                                               | Verified                        |
-| R23 | 6                 | Validate incoming data                                                                | Server validation tests for fields, enums, dates, types and malformed JSON                  | Verified                        |
-| R24 | 6                 | Appropriate status codes and centralized error handling                               | One JSON error envelope; predictable 400/404/500; unexpected errors hide stack traces       | Verified                        |
-| R25 | 6                 | Enable CORS for frontend                                                              | Allowed-origin and preflight tests                                                          | Verified                        |
-| R26 | 6                 | Configurable values through environment variables                                     | API port, allowed origin and frontend API base are documented/configurable                  | Verified                        |
-| R27 | 8                 | Reusable frontend components; dedicated API layer                                     | Review components, feature state and typed API module                                       | Verified                        |
-| R28 | 8                 | UI refreshes after create/update/delete                                               | CRUD E2E assertions including filtered/paginated lists                                      | Verified                        |
-| R29 | 8                 | Application logic not concentrated in one component                                   | Feature components/hooks separate form/list/details/API responsibilities                    | Verified                        |
+| ID  | Source            | Requirement                                                                           | Acceptance evidence                                                                         | Status           |
+| --- | ----------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ---------------- |
+| R01 | 1                 | React or Next.js frontend                                                             | React application builds and opens locally                                                  | Verified         |
+| R02 | 1                 | Node.js + Express preferred, or Python + FastAPI                                      | Express HTTP API starts from documented command                                             | Verified         |
+| R03 | 1, 6, constraints | Task data in backend memory only; no database or Firebase                             | Store is an array/object/Map; restart resets task data; no task browser persistence         | Verified         |
+| R04 | 1                 | REST API and Git + GitHub                                                             | Endpoint contracts below; public repository with both workspaces and successful CI          | Verified; public |
+| R05 | 2A                | Dashboard displays task list                                                          | Dashboard renders tasks returned by API                                                     | Verified         |
+| R06 | 2A                | List shows title, description, status, priority, created date                         | Desktop and mobile browser assertions/screenshots                                           | Verified         |
+| R07 | 2A                | Create, edit, view, delete actions                                                    | Complete CRUD through UI with API-backed state refresh                                      | Verified         |
+| R08 | 2A, 8             | Loading, success, empty, error states                                                 | Browser tests for delayed response, mutation success, no data, failed response/retry        | Verified         |
+| R09 | 2A                | Responsive desktop/mobile                                                             | Browser checks at desktop and mobile widths; no horizontal overflow or inaccessible actions | Verified         |
+| R10 | 2B                | Create form includes title, description, status, priority, due date                   | All five inputs visible and usable                                                          | Verified         |
+| R11 | 2B, 8             | Title and description required; client validation before submission                   | Empty and whitespace-only inputs rejected; inline accessible errors                         | Verified         |
+| R12 | 2C                | Edit all five user-editable fields                                                    | Persist changes via PUT; list/details reflect updated values                                | Verified         |
+| R13 | 2D                | Individual complete details in page/modal/drawer                                      | Fetch selected task; display every task field with understandable dates                     | Verified         |
+| R14 | 3                 | Task contains id, title, description, status, priority, dueDate, createdAt, updatedAt | API shape assertions; server-generated identity/timestamps                                  | Verified         |
+| R15 | 3                 | Exact status enum: pending, in_progress, completed                                    | Invalid status rejected; UI labels map to enum                                              | Verified         |
+| R16 | 3                 | Exact priority enum: low, medium, high                                                | Invalid priority rejected                                                                   | Verified         |
+| R17 | 4                 | GET /api/tasks returns 200                                                            | Supertest list assertions                                                                   | Verified         |
+| R18 | 4                 | GET /api/tasks/:id returns 200 or 404                                                 | Existing and missing task tests                                                             | Verified         |
+| R19 | 4                 | POST /api/tasks returns 201 or 400                                                    | Valid creation and invalid body tests                                                       | Verified         |
+| R20 | 4                 | PUT /api/tasks/:id returns 200 or 404                                                 | Existing and missing task tests; invalid body additionally returns 400                      | Verified         |
+| R21 | 4                 | DELETE /api/tasks/:id returns 200 or 404                                              | Existing delete returns 200, repeated delete returns 404                                    | Verified         |
+| R22 | 6                 | Clean routes/controllers/services separation                                          | Review dedicated modules and responsibilities                                               | Verified         |
+| R23 | 6                 | Validate incoming data                                                                | Server validation tests for fields, enums, dates, types and malformed JSON                  | Verified         |
+| R24 | 6                 | Appropriate status codes and centralized error handling                               | One JSON error envelope; predictable 400/404/500; unexpected errors hide stack traces       | Verified         |
+| R25 | 6                 | Enable CORS for frontend                                                              | Allowed-origin and preflight tests                                                          | Verified         |
+| R26 | 6                 | Configurable values through environment variables                                     | API port, allowed origin and frontend API base are documented/configurable                  | Verified         |
+| R27 | 8                 | Reusable frontend components; dedicated API layer                                     | Review components, feature state and typed API module                                       | Verified         |
+| R28 | 8                 | UI refreshes after create/update/delete                                               | CRUD E2E assertions including filtered/paginated lists                                      | Verified         |
+| R29 | 8                 | Application logic not concentrated in one component                                   | Feature components/hooks separate form/list/details/API responsibilities                    | Verified         |
 
 ## Bonus requirements
 
@@ -52,26 +52,26 @@ The user asks for a planned, independently reviewed, visually polished implement
 
 ## Deliverables and user additions
 
-| ID  | Source | Deliverable                                                | Acceptance evidence                                                                           | Status                  |
-| --- | ------ | ---------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ----------------------- |
-| D01 | 10     | GitHub repository with frontend/backend                    | Local repository ready; remote publication only after manual approval                         | Deferred publication    |
-| D02 | 10     | README setup/run instructions                              | Reproducible install, dev, test, build commands; architecture and memory-reset behavior       | Verified                |
-| D03 | 10     | API endpoint documentation                                 | README/API doc links and curl examples match implementation                                   | Verified                |
-| D04 | 10     | Postman collection or Swagger docs                         | OpenAPI JSON/YAML committed; local Swagger route opens                                        | Verified                |
-| D05 | 10     | .env.example                                               | Both applications' configuration represented without secrets                                  | Verified                |
-| D06 | 10     | Screenshots or short demo video                            | Saved desktop/mobile light/dark screenshots of working application                            | Verified                |
-| U01 | User   | Inspect employer website; adapt palette/style thoughtfully | Document verified site URL and design observations; implement original matching theme         | Verified                |
-| U02 | User   | Plan and verify entire plan before implementation          | PLAN.md and independent PLAN-REVIEW.md                                                        | Verified                |
-| U03 | User   | Use appropriate skills and multiple agents                 | Agent responsibilities and chosen skills recorded by orchestrator                             | Verified                |
-| U04 | User   | Tests and full working verification                        | Backend integration tests, frontend logic/component tests, real browser CRUD and state checks | Verified                |
-| U05 | User   | Manual preview before hosting/submission                   | User receives local frontend/API/docs URLs and verification notes                             | Ready for manual review |
+| ID  | Source | Deliverable                                                | Acceptance evidence                                                                           | Status            |
+| --- | ------ | ---------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ----------------- |
+| D01 | 10     | GitHub repository with frontend/backend                    | Public repository contains both workspaces; source pushed to main after manual approval       | Verified; public  |
+| D02 | 10     | README setup/run instructions                              | Reproducible install, dev, test, build commands; architecture and memory-reset behavior       | Verified          |
+| D03 | 10     | API endpoint documentation                                 | README/API doc links and curl examples match implementation                                   | Verified          |
+| D04 | 10     | Postman collection or Swagger docs                         | OpenAPI JSON/YAML committed; local Swagger route opens                                        | Verified          |
+| D05 | 10     | .env.example                                               | Both applications' configuration represented without secrets                                  | Verified          |
+| D06 | 10     | Screenshots or short demo video                            | Saved desktop/mobile light/dark screenshots of working application                            | Verified          |
+| U01 | User   | Inspect employer website; adapt palette/style thoughtfully | Document verified site URL and design observations; implement original matching theme         | Verified          |
+| U02 | User   | Plan and verify entire plan before implementation          | PLAN.md and independent PLAN-REVIEW.md                                                        | Verified          |
+| U03 | User   | Use appropriate skills and multiple agents                 | Agent responsibilities and chosen skills recorded by orchestrator                             | Verified          |
+| U04 | User   | Tests and full working verification                        | Backend integration tests, frontend logic/component tests, real browser CRUD and state checks | Verified          |
+| U05 | User   | Manual preview before hosting/submission                   | User reviewed the local application and subsequently authorized GitHub publication/hosting    | Approval received |
 
 ## Evidence locations
 
-All locally implementable required and bonus items passed the final check on 8 October 2026. R04/D01 retain the GitHub publication step for after the user's manual review. U05 records availability of the local preview, not approval by the user.
+All required and bonus capabilities passed local checks on 8 October 2026. R04/D01 publication is verified and U05 manual approval is received. Verification records 149 passing checks (73 frontend, 57 backend, 19 Chromium) and successful CI for `74b5f3e`: [run 37806687947](https://github.com/aman-singh27/cleanomatics-task-workspace/actions/runs/37806687947). The hosted verifier passed all 14 groups, including real CRUD, mobile/filter journeys and Swagger proxy Execute. Browser evidence is Chromium only; no Firefox/Safari or 15-minute-idle cold-start execution is claimed. Earlier review documents describe historical checkpoints, not the current publication gate.
 
-- R01, R05-R13, R27-R29, B01-B06: `frontend/src/`, its seven test suites, and the real API browser flows in `e2e/tasks.spec.ts`.
-- R02-R04, R14-R26: `backend/src/` and the 47 integration tests in `backend/tests/tasks.test.js`; server startup and real REST requests also exercised by E2E.
+- R01, R05-R13, R27-R29, B01-B06: `frontend/src/`, its test suites, and real API browser flows in `e2e/tasks.spec.ts`.
+- R02-R04, R14-R26: `backend/src/` and the current 57 backend tests; server startup and real REST requests also exercised by E2E and the hosted verifier.
 - B07, D03-D04: `backend/openapi.json`, `backend/src/openapi.js`, `docs/API.md`, and the OpenAPI parity test. Swagger runs at `/api/docs`.
 - D02, D05: root README, both `.env.example` files, and the documented environment configuration.
 - D06: six captures in `output/playwright/`; desktop/mobile light/dark, details, and a mobile form.

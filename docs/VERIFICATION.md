@@ -10,7 +10,19 @@ The new real API scenario covers overdue inclusion/exclusion, clearing search/pr
 
 The results below describe the earlier local review revision and are retained as the review history.
 
-## Executed checks
+## Hosted acceptance
+
+Public source: [GitHub repository](https://github.com/aman-singh27/cleanomatics-task-workspace). Frontend: [live workspace](https://cleanomatics-task-workspace.vercel.app). API: [health](https://cleanomatics-task-api.onrender.com/api/health). Documentation: [Swagger through the frontend](https://cleanomatics-task-workspace.vercel.app/api/docs/) and [direct API Swagger](https://cleanomatics-task-api.onrender.com/api/docs/).
+
+All 14 hosted smoke checks passed on runtime revision `74b5f3e` on 8 October 2026. The verifier used actual public services and Chromium without intercepting successful responses. It confirmed request-ID/security/no-store/CORS headers, invalid-input 400 and missing-record GET/PUT/DELETE 404, required-form validation, POST 201, individual GET/details, PUT form and inline status changes, DELETE 200, search/combined filters/all sorting modes/pagination, metric counts, theme-only persistence, mobile controls, unknown-page/privacy/terms routing, published OpenAPI, and Swagger Execute GET returning 200. No unhandled browser errors occurred. The verifier deleted only its own generated task, leaving the seeded collection intact. Full evidence: [hosted-verification.json](hosted-verification.json).
+
+The first hosted checks found that Swagger's redirected `/api/docs/` URL fell through the generic API wildcard to the SPA fallback. An explicit directory rewrite fixes this and the browser execution test passed after redeployment. An earlier ambiguous Swagger test selector was also corrected. Screenshots were refreshed from the public frontend after verifier cleanup.
+
+[GitHub Actions for `74b5f3e`](https://github.com/aman-singh27/cleanomatics-task-workspace/actions/runs/37806687947) passed the complete 149-test suite on Ubuntu. Vercel's Git integration automatically deploys main to the public project alias; Render auto-deploys the same branch to one free Node instance in Singapore. Render's actual service uses TCP platform health checking; `/api/health` was verified over HTTP. The reproducible blueprint specifies HTTP health checking for a future blueprint-created service.
+
+Limitations: Chromium automation only; no Safari, Firefox, physical-device testing, sustained load test, or deliberately induced 15-minute free-tier sleep. Tasks reset on backend restart and are shared without authentication, as required for this evaluation demo. Employer reply is prepared locally and has not been sent.
+
+## Earlier local review: executed checks
 
 | Check                              | Result                                                                                       |
 | ---------------------------------- | -------------------------------------------------------------------------------------------- |
@@ -72,10 +84,10 @@ The final revision passed **136 tests total: 71 frontend, 47 backend and 18 brow
 - [Task details](../output/playwright/task-details.png)
 - [Mobile form](../output/playwright/mobile-form.png)
 
-Final screenshots show the user's live preview records. Labels, descriptions, created/due dates, inline status controls and all required actions fit the reviewed layouts. No decorative gradients, blanket shadows, glass surfaces, oversized radii or promotional feature grids were added. The sidebar scrollbar uses a navy track and muted navy thumb.
+Earlier screenshots showed the user's live preview records; the current artifacts are refreshed from the hosted demo. Labels, descriptions, created/due dates, inline status controls and all required actions fit the reviewed layouts. No decorative gradients, blanket shadows, glass surfaces, oversized radii or promotional feature grids were added. The sidebar scrollbar uses a navy track and muted navy thumb.
 
-## Review handoff
+## Earlier local review handoff
 
 Current frontend: **http://127.0.0.1:5175/**. API: **http://127.0.0.1:4000/api**. Swagger: **http://127.0.0.1:4000/api/docs/**. Follow [manual review steps](MANUAL-REVIEW.md).
 
-Tasks remain in backend memory as required. Restarting the API resets them; only theme preference persists in the browser. The frontend 404 screen is client-side SPA route recovery, while backend missing routes return HTTP 404. No authentication or persistent database is included in this assignment. The local implementation and submission artifacts are ready; external publication and hosting await the user's request after manual review.
+Tasks remain in backend memory as required. Restarting the API resets them; only theme preference persists in the browser. The frontend 404 screen is client-side SPA route recovery, while backend missing routes return HTTP 404. No authentication or persistent database is included in this assignment. This earlier handoff preceded the user's hosting authorization; the hosted acceptance section records completed publication.

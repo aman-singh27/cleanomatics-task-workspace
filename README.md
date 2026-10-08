@@ -2,7 +2,7 @@
 
 A full-stack task manager built for the Cleanomatics developer assignment. Create, inspect, edit, and delete tasks in a responsive workspace using blue, navy, and off-white surfaces inspired by the company palette. Every task operation uses the Express REST API.
 
-Repository: [aman-singh27/cleanomatics-task-workspace](https://github.com/aman-singh27/cleanomatics-task-workspace). The public repository has been created; source publication is pending. **Hosted frontend, API and Swagger URLs are pending deployment and verification.** See the [deployment guide](docs/DEPLOYMENT.md) for configuration and acceptance checks.
+Repository: [aman-singh27/cleanomatics-task-workspace](https://github.com/aman-singh27/cleanomatics-task-workspace). Source is published. [Live workspace](https://cleanomatics-task-workspace.vercel.app) · [API](https://cleanomatics-task-api.onrender.com/api/tasks) · [Swagger](https://cleanomatics-task-workspace.vercel.app/api/docs/) · [Screenshots](output/playwright/). See the [deployment guide](docs/DEPLOYMENT.md) for configuration and acceptance checks.
 
 ## Run locally
 
@@ -47,7 +47,7 @@ For operational review, the API returns a generated `X-Request-Id`, uses privacy
 
 **Tasks live only in backend memory.** There is no database, Firebase, browser task persistence, or disk task persistence. All changes disappear when the backend restarts. By default, the server starts with example operations tasks. Set `SEED_DEMO_DATA=false` for an empty workspace. A restart with demo seeding enabled restores the examples, not previously created tasks. Only the theme preference is saved in browser localStorage.
 
-No authentication is included because the assignment does not require it. A public demo shares one task collection across visitors and retains the reset-on-restart constraint. Run the backend as one Node process and one instance. The planned Render free service sleeps after 15 minutes without inbound traffic and can take about a minute to wake; backend memory is lost when the process stops. See [Render's free-service limits](https://render.com/docs/free).
+No authentication is included because the assignment does not require it. The public demo shares one task collection across visitors and retains the reset-on-restart constraint. The backend runs as one Node process and one instance. Render's free service sleeps after 15 minutes without inbound traffic and can take about a minute to wake; backend memory is lost when the process stops. See [Render's free-service limits](https://render.com/docs/free).
 
 ## Verify
 
@@ -90,7 +90,7 @@ docs/            Plan, independent review, requirements, brand and API notes
 
 The frontend obtains the task array from `GET /api/tasks` and performs search, filtering, sorting, and pagination locally. This keeps the assignment's REST contract straightforward and suits its small in-memory dataset. The list is reconciled after every successful mutation. Single-task details use `GET /api/tasks/:id`.
 
-In development Vite proxies `/api` to Express. `API_PROXY_TARGET` changes that development proxy target. Hosted routing uses a Vercel external rewrite from `/api/:path*` to the Render backend's `/api/:path*`, keeping browser requests on the frontend origin. The actual Render destination is pending configuration. `VITE_API_URL` defaults to `/api`; a separate API base must also include `/api`. Set backend `CORS_ORIGINS` to exact allowed frontend origins. See the [deployment guide](docs/DEPLOYMENT.md).
+In development Vite proxies `/api` to Express. `API_PROXY_TARGET` changes that development proxy target. Hosted routing uses a Vercel external rewrite from `/api/:path*` to the Render backend's `/api/:path*`, keeping browser requests on the frontend origin. A specific `/api/docs/` rewrite preserves Swagger's directory URL before the SPA fallback. `VITE_API_URL` defaults to `/api`; a separate API base must also include `/api`. Backend `CORS_ORIGINS` allows the exact frontend origins. See the [deployment guide](docs/DEPLOYMENT.md).
 
 ## API
 
@@ -108,4 +108,12 @@ See [API documentation](docs/API.md), Swagger at `/api/docs`, and the machine-re
 
 Start with the [manual review guide](docs/MANUAL-REVIEW.md). The [requirements matrix](docs/REQUIREMENTS.md) traces assignment requirements; the [verification report](docs/VERIFICATION.md) records executed checks and screenshots. [Brand research](docs/BRAND-RESEARCH.md) records observed company design cues. The app uses an original identity illustration and interface; no company assets are copied.
 
-GitHub publication and hosting are now authorized and being prepared. The employer requested the GitHub link by **9 October 2026, end of day**. The [submission checklist](docs/SUBMISSION-CHECKLIST.md) maps the document's deliverables. Local verification evidence is recorded separately from hosted checks; hosted acceptance has not yet been claimed.
+GitHub source and both services are published. The employer requested the GitHub link by **9 October 2026, end of day**. The [submission checklist](docs/SUBMISSION-CHECKLIST.md) maps all six deliverables and seven bonuses. The latest GitHub Actions run passed 149 tests. All 14 hosted checks passed against real services, including UI CRUD, mobile/theme controls, sorting/filtering, Swagger execution, and error contracts; [machine-readable evidence](docs/hosted-verification.json) records the run. Browser coverage is Chromium; other browsers and physical devices have not been tested.
+
+## Screenshots
+
+![Hosted desktop workspace](output/playwright/desktop-light.png)
+
+[Dark desktop](output/playwright/desktop-dark.png) · [Mobile](output/playwright/mobile-light.png) · [Dark mobile](output/playwright/mobile-dark.png) · [Task details](output/playwright/task-details.png) · [Mobile task form](output/playwright/mobile-form.png)
+
+Refresh the screenshots with `npm run screenshots` after starting the default local frontend. For a different port or the hosted demo, set `PREVIEW_URL` before running that command. Hosted smoke checks can be repeated with `node scripts/verify-deployment.mjs --live-url https://cleanomatics-task-workspace.vercel.app --api-url https://cleanomatics-task-api.onrender.com/api`; they create and remove only their own uniquely identified test task.

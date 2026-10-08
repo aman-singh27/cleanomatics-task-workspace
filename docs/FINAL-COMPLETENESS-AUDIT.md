@@ -2,51 +2,51 @@
 
 Fresh independent review on 8 October 2026. The original DOCX was reopened as a ZIP and its `word/document.xml` extracted again; this audit does not rely only on earlier summaries. Reviewed current source, tests, configuration, documentation and previously inspected screenshot artifacts. No source changes or shared E2E runs were performed by this reviewer.
 
-**Final independent source verdict: PASS.** All required and bonus capabilities exist, and every actionable finding in this audit is fixed in source with regression coverage. Fresh executed checks remain the root agent's separate completion gate. GitHub delivery remains intentionally deferred under the user's instruction to review locally first.
+**Final independent source verdict: PASS.** All required and bonus capabilities exist, and every source finding below is fixed with regression coverage. Manual approval and subsequent publication authorization have been received. The [GitHub repository](https://github.com/aman-singh27/cleanomatics-task-workspace), [frontend](https://cleanomatics-task-workspace.vercel.app), and [API](https://cleanomatics-task-api.onrender.com/api/tasks) are public. Verification records 149 passing local/CI checks and all 14 hosted groups passing on `74b5f3e`, including frontend-proxied Swagger Execute GET 200. Employer email has not been sent. Finding descriptions below preserve the initial review history.
 
 ## Exact assignment checklist
 
-| ID  | Assignment requirement                                  | Current code/artifact evidence                                                               | Assessment                      |
-| --- | ------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------- |
-| T01 | React.js or Next.js frontend                            | `frontend/package.json`, `src/main.tsx`, `src/App.tsx`: React/TypeScript/Vite                | Complete                        |
-| T02 | Node + Express preferred, or Python + FastAPI backend   | `backend/package.json`, `src/app.js`, `src/server.js`                                        | Complete                        |
-| T03 | In-memory array/object data only; no database           | `backend/src/services/task-service.js`: process-local Map, detached task copies              | Complete                        |
-| T04 | REST API                                                | Task routes/controllers/API client; exact contract below                                     | Complete                        |
-| T05 | Git + GitHub version control                            | Local `.git`, committed code, lockfile/workflow; GitHub publication awaits user              | Local complete; remote deferred |
-| A01 | Dashboard displays task list                            | `TaskList.tsx` maps paginated tasks from `useTasks` list response                            | Complete                        |
-| A02 | Show title, description, status, priority, created date | Task rows/cards plus inline tablet-created metadata; E2E checks 320/390/768/1024/1440px      | Complete                        |
-| A03 | Actions create, edit, view and delete                   | Overview/empty create, TaskForm, title/details, row/details delete confirmation              | Complete                        |
-| A04 | Appropriate loading/empty/error states                  | Skeletons, empty workspace/no matches, list Retry; details and mutation failures             | Complete                        |
-| A05 | Responsive desktop/mobile                               | Responsive stylesheet, desktop rows/mobile cards, mobile sidebar; keyboard cycle fix present | Complete; latest checks pending |
-| B01 | Create form: required title                             | `TaskForm.tsx`, `lib/tasks.ts` trimmed required/length validation                            | Complete                        |
-| B02 | Create form: required description                       | Same; inline associated error and first-invalid focus                                        | Complete                        |
-| B03 | Create form: status                                     | Native exact-enum select; default pending                                                    | Complete                        |
-| B04 | Create form: priority                                   | Native exact-enum select; default medium                                                     | Complete                        |
-| B05 | Create form: due date                                   | Native date input, optional null conversion, calendar check; past dates accepted             | Complete                        |
-| B06 | Validate required inputs before submission              | `submit` validates before `onSave`; unit/E2E empty/whitespace checks                         | Complete                        |
-| C01 | Edit title, description, status, priority, due date     | TaskForm initial state + full PUT payload                                                    | Complete                        |
-| D01 | Page/modal/drawer with complete individual details      | `TaskDetails.tsx` calls GET id; shows fields, ID, created/updated timestamps                 | Complete                        |
-| S01 | Task id                                                 | Backend UUID; Task type/OpenAPI schema                                                       | Complete                        |
-| S02 | Task title                                              | Validated trimmed string                                                                     | Complete                        |
-| S03 | Task description                                        | Validated trimmed string                                                                     | Complete                        |
-| S04 | Status pending/in_progress/completed                    | Shared exact enums, backend validation, form/inline controls                                 | Complete                        |
-| S05 | Priority low/medium/high                                | Shared exact enums and backend validation                                                    | Complete                        |
-| S06 | dueDate                                                 | Actual date-only string or null                                                              | Complete                        |
-| S07 | createdAt                                               | Server ISO timestamp, preserved on update                                                    | Complete                        |
-| S08 | updatedAt                                               | Server ISO timestamp renewed on update                                                       | Complete                        |
-| E01 | Separate routes/controllers/services                    | Dedicated modules in corresponding backend directories                                       | Complete                        |
-| E02 | Validate request data                                   | `task-validation.js`: object/types/required/length/enums/calendar/unknown fields             | Complete                        |
-| E03 | Appropriate HTTP status codes                           | Controllers + HttpError middleware; exact API matrix below                                   | Complete                        |
-| E04 | Centralized error handling                              | `middleware/errors.js`: JSON 400/413/404/safe 500                                            | Complete                        |
-| E05 | CORS for frontend                                       | `app.js`, configurable exact-origin list and preflight tests                                 | Complete                        |
-| E06 | Environment-configurable values                         | `config.js`, backend/frontend `.env.example`, Vite proxy loadEnv                             | Complete                        |
-| E07 | Backend-memory task store resets on restart             | New service per app/process; README/privacy explain demo seed restoration                    | Complete                        |
-| F01 | Reusable frontend components                            | Overview, list, form, details, dialog, confirmation, inline status, sidebar                  | Complete                        |
-| F02 | Dedicated service/API layer                             | `frontend/src/api/tasks.ts`; endpoint response validators now present                        | Complete; latest checks pending |
-| F03 | Loading/success/empty/error handling                    | Hook state, list/details states, pending forms/status/delete, live toasts/alerts             | Complete                        |
-| F04 | Client-side form validation                             | `lib/tasks.ts`, TaskForm; no network request on invalid input                                | Complete                        |
-| F05 | Refresh/update UI after create/update/delete            | Functional state setters plus pending-load authoritative refresh                             | Complete                        |
-| F06 | Avoid all logic in one component                        | API, reusable views, task hook, selector/validation/date helpers separated                   | Complete                        |
+| ID  | Assignment requirement                                  | Current code/artifact evidence                                                            | Assessment       |
+| --- | ------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ---------------- |
+| T01 | React.js or Next.js frontend                            | `frontend/package.json`, `src/main.tsx`, `src/App.tsx`: React/TypeScript/Vite             | Complete         |
+| T02 | Node + Express preferred, or Python + FastAPI backend   | `backend/package.json`, `src/app.js`, `src/server.js`                                     | Complete         |
+| T03 | In-memory array/object data only; no database           | `backend/src/services/task-service.js`: process-local Map, detached task copies           | Complete         |
+| T04 | REST API                                                | Task routes/controllers/API client; exact contract below                                  | Complete         |
+| T05 | Git + GitHub version control                            | Public GitHub repository, pushed main, lockfile/workflow and successful CI                | Complete; public |
+| A01 | Dashboard displays task list                            | `TaskList.tsx` maps paginated tasks from `useTasks` list response                         | Complete         |
+| A02 | Show title, description, status, priority, created date | Task rows/cards plus inline tablet-created metadata; E2E checks 320/390/768/1024/1440px   | Complete         |
+| A03 | Actions create, edit, view and delete                   | Overview/empty create, TaskForm, title/details, row/details delete confirmation           | Complete         |
+| A04 | Appropriate loading/empty/error states                  | Skeletons, empty workspace/no matches, list Retry; details and mutation failures          | Complete         |
+| A05 | Responsive desktop/mobile                               | Responsive stylesheet, desktop rows/mobile cards, mobile sidebar; keyboard cycle verified | Complete         |
+| B01 | Create form: required title                             | `TaskForm.tsx`, `lib/tasks.ts` trimmed required/length validation                         | Complete         |
+| B02 | Create form: required description                       | Same; inline associated error and first-invalid focus                                     | Complete         |
+| B03 | Create form: status                                     | Native exact-enum select; default pending                                                 | Complete         |
+| B04 | Create form: priority                                   | Native exact-enum select; default medium                                                  | Complete         |
+| B05 | Create form: due date                                   | Native date input, optional null conversion, calendar check; past dates accepted          | Complete         |
+| B06 | Validate required inputs before submission              | `submit` validates before `onSave`; unit/E2E empty/whitespace checks                      | Complete         |
+| C01 | Edit title, description, status, priority, due date     | TaskForm initial state + full PUT payload                                                 | Complete         |
+| D01 | Page/modal/drawer with complete individual details      | `TaskDetails.tsx` calls GET id; shows fields, ID, created/updated timestamps              | Complete         |
+| S01 | Task id                                                 | Backend UUID; Task type/OpenAPI schema                                                    | Complete         |
+| S02 | Task title                                              | Validated trimmed string                                                                  | Complete         |
+| S03 | Task description                                        | Validated trimmed string                                                                  | Complete         |
+| S04 | Status pending/in_progress/completed                    | Shared exact enums, backend validation, form/inline controls                              | Complete         |
+| S05 | Priority low/medium/high                                | Shared exact enums and backend validation                                                 | Complete         |
+| S06 | dueDate                                                 | Actual date-only string or null                                                           | Complete         |
+| S07 | createdAt                                               | Server ISO timestamp, preserved on update                                                 | Complete         |
+| S08 | updatedAt                                               | Server ISO timestamp renewed on update                                                    | Complete         |
+| E01 | Separate routes/controllers/services                    | Dedicated modules in corresponding backend directories                                    | Complete         |
+| E02 | Validate request data                                   | `task-validation.js`: object/types/required/length/enums/calendar/unknown fields          | Complete         |
+| E03 | Appropriate HTTP status codes                           | Controllers + HttpError middleware; exact API matrix below                                | Complete         |
+| E04 | Centralized error handling                              | `middleware/errors.js`: JSON 400/413/404/safe 500                                         | Complete         |
+| E05 | CORS for frontend                                       | `app.js`, configurable exact-origin list and preflight tests                              | Complete         |
+| E06 | Environment-configurable values                         | `config.js`, backend/frontend `.env.example`, Vite proxy loadEnv                          | Complete         |
+| E07 | Backend-memory task store resets on restart             | New service per app/process; README/privacy explain demo seed restoration                 | Complete         |
+| F01 | Reusable frontend components                            | Overview, list, form, details, dialog, confirmation, inline status, sidebar               | Complete         |
+| F02 | Dedicated service/API layer                             | `frontend/src/api/tasks.ts`; endpoint response validators and regression checks           | Complete         |
+| F03 | Loading/success/empty/error handling                    | Hook state, list/details states, pending forms/status/delete, live toasts/alerts          | Complete         |
+| F04 | Client-side form validation                             | `lib/tasks.ts`, TaskForm; no network request on invalid input                             | Complete         |
+| F05 | Refresh/update UI after create/update/delete            | Functional state setters plus pending-load authoritative refresh                          | Complete         |
+| F06 | Avoid all logic in one component                        | API, reusable views, task hook, selector/validation/date helpers separated                | Complete         |
 
 The DOCX's backend file tree is explicitly suggested. The implemented equivalent filenames/modules preserve its requested responsibilities.
 
@@ -78,14 +78,14 @@ Health, Swagger and machine-readable OpenAPI routes are additional working endpo
 
 ## Exact deliverables checklist
 
-| Deliverable                                   | Evidence                                                                             | Assessment                               |
-| --------------------------------------------- | ------------------------------------------------------------------------------------ | ---------------------------------------- |
-| GitHub repository containing frontend/backend | Local repository has both workspaces and commits; GitHub upload deferred             | Intentionally pending user authorization |
-| README setup/run instructions                 | Node prerequisite, npm ci/dev/check, URLs, config, storage behavior and architecture | Complete                                 |
-| API endpoint documentation                    | `docs/API.md`, `backend/API.md`, README/API table and examples                       | Complete                                 |
-| Postman collection or Swagger documentation   | OpenAPI snapshot + live Swagger; guarded parity                                      | Complete                                 |
-| `.env.example` when configurable              | Both workspace examples, ignored live env files                                      | Complete                                 |
-| Screenshots or short demo                     | Six PNG artifacts in `output/playwright`, capture script                             | Complete; root regenerates as necessary  |
+| Deliverable                                   | Evidence                                                                             | Assessment                          |
+| --------------------------------------------- | ------------------------------------------------------------------------------------ | ----------------------------------- |
+| GitHub repository containing frontend/backend | Public repository has both workspaces, commits and successful CI                     | Complete; published                 |
+| README setup/run instructions                 | Node prerequisite, npm ci/dev/check, URLs, config, storage behavior and architecture | Complete                            |
+| API endpoint documentation                    | `docs/API.md`, `backend/API.md`, README/API table and examples                       | Complete                            |
+| Postman collection or Swagger documentation   | OpenAPI snapshot + live Swagger; guarded parity                                      | Complete                            |
+| `.env.example` when configurable              | Both workspace examples, ignored live env files                                      | Complete                            |
+| Screenshots or short demo                     | Six PNG artifacts in `output/playwright`, capture script                             | Complete; hosted captures refreshed |
 
 Suggested completion time and evaluation weights are contextual, not additional features. Authentication, databases, Firebase, role systems and laundry platform integrations are not required; none has been added.
 
@@ -94,7 +94,7 @@ Suggested completion time and evaluation weights are contextual, not additional 
 | Interaction                             | Source behavior                                                                          | Existing evidence / follow-up                                                                 |
 | --------------------------------------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
 | Dashboard New task                      | Opens create form                                                                        | App tests and real CRUD E2E                                                                   |
-| Empty-workspace New task                | Same create action from empty state                                                      | Explicit empty-state click now in root control sweep                                          |
+| Empty-workspace New task                | Same create action from empty state                                                      | Explicit empty-state click covered by the browser control sweep                               |
 | Create/Save changes                     | Validates then POST/PUT; pending controls and error retention                            | Unit/E2E, real server record assertions                                                       |
 | Form Cancel                             | Closes without saving                                                                    | App cancellation test                                                                         |
 | Dialog close X / Escape / backdrop      | Close unless mutation pending; restore focus                                             | App/Dialog tests, keyboard E2E; backdrop unit test                                            |
@@ -127,7 +127,7 @@ List view, summary values, task completion progress and workspace context are no
 
 ### F01 — P2: malformed API successes can poison state; null errors are dereferenced
 
-**Location at initial review:** `frontend/src/api/tasks.ts:24–31`, successful endpoint wrappers at lines 34–47. **Status: fixed in final source; root full checks pending.**
+**Location at initial review:** `frontend/src/api/tasks.ts:24–31`, successful endpoint wrappers at lines 34–47. **Status: fixed; full checks passed.**
 
 The client converts invalid JSON to `{}` and casts all successful bodies to the requested TypeScript shape without checking runtime data. A successful list returning an object/null or a malformed task array reaches `tasks.filter`; a malformed created/updated task can be inserted into the list. The workspace then crashes into its render boundary instead of showing a recoverable list/form/details error. A failed HTTP response whose body is JSON null also dereferences `data.message`, producing a browser implementation error rather than the intended ApiError.
 
@@ -139,11 +139,11 @@ Additional browser regression intercepts invalid successful list/create/details 
 
 ### F02 — P2: mobile navigation opens/closes without keyboard focus management
 
-**Location at initial review:** `frontend/src/components/Sidebar.tsx:17–91`, trigger in `App.tsx:133–139`. **Status: fixed in final source; root full checks pending.**
+**Location at initial review:** `frontend/src/components/Sidebar.tsx:17–91`, trigger in `App.tsx:133–139`. **Status: fixed; full checks passed.**
 
 The sidebar sits before the Open navigation button in DOM order. Opening it by keyboard leaves focus on the trigger behind the backdrop, so forward Tab walks into main content rather than the opened panel's theme/documentation/legal controls. The menu has no Escape close handler; closing through a sidebar control leaves focus on a now-hidden element. Closed-sidebar visibility is correctly handled, but the open keyboard cycle remains incomplete.
 
-Move focus into the opened mobile panel, support Escape, return focus to the trigger, and contain focus if the backdrop makes the panel modal. Disable the global search shortcut while navigation is open or keep the main area inert so it cannot move focus behind the panel. Desktop sidebar access must remain unaffected. Root owns implementation and keyboard browser regression.
+Move focus into the opened mobile panel, support Escape, return focus to the trigger, and contain focus if the backdrop makes the panel modal. Disable the global search shortcut while navigation is open or keep the main area inert so it cannot move focus behind the panel. Desktop sidebar access must remain unaffected. Implementation and keyboard browser regression were assigned at this historical checkpoint.
 
 **Follow-up:** Sidebar now focuses its first control, contains Tab, handles Escape, marks the main shell inert, locks body scroll, restores trigger focus and cleans up on desktop resize. The global slash shortcut is gated by `navOpen`. Browser regression covers keyboard opening, repeated Tab, slash/Escape, close button, backdrop and mobile-to-desktop cleanup.
 
@@ -167,4 +167,10 @@ Every row uses the same accessible names “Edit task” and “Delete task”; 
 - Filtered status changes remove rows correctly and clamp pages. Focus restoration respects deliberately moved focus; native-select browser tests explicitly focus before selecting when asserting focus behavior.
 - Theme storage contains no task data. Date-only rendering avoids UTC midnight drift. Sorting is deterministic; null due dates remain last in either direction.
 
-No further reproducible required-feature or API-contract omission was identified. All source findings F01/F02/F03 are resolved. The expanded browser source covers all identified control gaps: empty-state creation, cancel/close/backdrop, details delete cancellation/confirmation, toast dismissal, shortcut and skip link, documentation popup/Execute, mobile keyboard lifecycle, malformed-success recovery and render-error retry/reload. The root agent reports the final revision's full `npm run check` passed: 71 frontend, 47 backend and 18 Chromium cases, totaling 136 tests; TypeScript, production build and all 80% coverage gates passed. Root also reports formatting checks passed, dependency audit found zero vulnerabilities, and six screenshots were recaptured without horizontal overflow or page errors. Executed results are recorded in `docs/VERIFICATION.md`; execution belongs to the root agent, and this reviewer did not run the shared suite. Final independent audit and root verification are complete. GitHub/hosting/employer contact remains deferred.
+No further reproducible required-feature or API-contract omission was identified. All source findings F01/F02/F03 are resolved. The browser source covers the identified control gaps: empty-state creation, cancel/close/backdrop, details delete cancellation/confirmation, toast dismissal, shortcut and skip link, documentation popup/Execute, mobile keyboard lifecycle, malformed-success recovery and render-error retry/reload.
+
+The earlier local checkpoint passed 136 tests. Following the operational middleware, bounded shutdown and derived Overdue queue additions, verification records `npm run check` passed **149 tests: 73 frontend, 57 backend and 19 Chromium cases**, with TypeScript, production build and 80% coverage gates passing. Latest [GitHub Actions run 37806687947](https://github.com/aman-singh27/cleanomatics-task-workspace/actions/runs/37806687947) passed for `74b5f3e`. Six hosted screenshots were refreshed after verifier cleanup without overflow or page errors. Execution was performed by the project verification process; this reviewer did not run the shared or hosted mutation suites.
+
+The first hosted run passed 12 groups covering real CRUD, validation/missing records, filters/sorting/pagination, theme persistence, mobile and frontend route recovery. It then exposed `/api/docs/` falling through to the SPA despite working API routes and Swagger assets. Source now puts an explicit trailing-slash docs rewrite before the API wildcard and SPA fallback (`74b5f3e`). The final hosted run **passed all 14 groups**, including real Swagger proxy rendering and Execute GET 200, with no unhandled browser errors. The hosted verifier confirmed cleanup removed only its own UUID record and the API retained its 12 seed records.
+
+The actual Render service uses a TCP health check because the connector could not set an HTTP health path; `render.yaml` separately supplies `/api/health` for blueprint deployments. The hosted verifier also checked the available application health endpoint. Browser execution was Chromium only; Firefox/Safari and waking after a real 15-minute idle period have not been tested. GitHub publication, hosting and hosted acceptance are complete; employer email remains unsent.

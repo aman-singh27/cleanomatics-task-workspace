@@ -1,0 +1,262 @@
+{
+  "startedAt": "2026-10-08T16:11:26.997Z",
+  "liveUrl": "https://cleanomatics-task-workspace.vercel.app",
+  "apiUrl": "https://cleanomatics-task-api.onrender.com/api",
+  "status": "passed",
+  "checks": [
+    {
+      "name": "Health, generated tracing headers, no-store and allowed frontend origin",
+      "status": "passed",
+      "durationMs": 837
+    },
+    {
+      "name": "Real API invalid-input and missing-record contracts",
+      "status": "passed",
+      "durationMs": 704
+    },
+    {
+      "name": "Required-field feedback and real UI creation returning HTTP 201",
+      "status": "passed",
+      "durationMs": 672
+    },
+    {
+      "name": "Task details load the real record and every metadata field",
+      "status": "passed",
+      "durationMs": 1139
+    },
+    {
+      "name": "UI editing replaces fields while retaining ID and creation timestamp",
+      "status": "passed",
+      "durationMs": 626
+    },
+    {
+      "name": "Inline status saves, metric totals and metric filter shortcuts",
+      "status": "passed",
+      "durationMs": 524
+    },
+    {
+      "name": "Debounced description search and combined status/priority filters",
+      "status": "passed",
+      "durationMs": 568
+    },
+    {
+      "name": "All sort modes order actual API records and pagination remains usable",
+      "status": "passed",
+      "durationMs": 779,
+      "detail": "Pagination exercised with existing workspace records."
+    },
+    {
+      "name": "Dark mode persists after reload without storing task records",
+      "status": "passed",
+      "durationMs": 390
+    },
+    {
+      "name": "Mobile navigation, inline status and form layout work without overflow",
+      "status": "passed",
+      "durationMs": 782
+    },
+    {
+      "name": "Real UI deletion removes only the verifier's own task",
+      "status": "passed",
+      "durationMs": 741
+    },
+    {
+      "name": "Unknown app path, privacy and terms recover to the task workspace",
+      "status": "passed",
+      "durationMs": 2209
+    },
+    {
+      "name": "Published Swagger and machine-readable OpenAPI document are usable",
+      "status": "passed",
+      "durationMs": 3495
+    },
+    {
+      "name": "No unhandled browser errors",
+      "status": "passed",
+      "durationMs": 0
+    }
+  ],
+  "requests": [
+    {
+      "source": "node",
+      "method": "GET",
+      "path": "/api/health",
+      "status": 200,
+      "requestId": "84976a90-972f-462b-9238-60a1fd377634"
+    },
+    {
+      "source": "node",
+      "method": "GET",
+      "path": "/api/tasks",
+      "status": 200,
+      "requestId": "653ea5d1-aef8-4ece-a387-df20c40ff83f"
+    },
+    {
+      "source": "node",
+      "method": "POST",
+      "path": "/api/tasks",
+      "status": 400,
+      "requestId": "b860b31f-0e44-44f2-9b96-946a092d51fb"
+    },
+    {
+      "source": "node",
+      "method": "GET",
+      "path": "/api/tasks/01797671-d240-4893-ba02-0b46d172ac43",
+      "status": 404,
+      "requestId": "d0d754fc-22a9-4ae1-96a6-81a3d5a5927a"
+    },
+    {
+      "source": "node",
+      "method": "PUT",
+      "path": "/api/tasks/01797671-d240-4893-ba02-0b46d172ac43",
+      "status": 404,
+      "requestId": "f08da107-8d83-43b3-916a-ed1b6812293d"
+    },
+    {
+      "source": "node",
+      "method": "DELETE",
+      "path": "/api/tasks/01797671-d240-4893-ba02-0b46d172ac43",
+      "status": 404,
+      "requestId": "ba78615e-6782-4c39-909c-27d5a237dc95"
+    },
+    {
+      "source": "browser",
+      "method": "GET",
+      "path": "/api/tasks",
+      "status": 200,
+      "requestId": "69214862-65b9-4d2b-9876-86117fbfe788"
+    },
+    {
+      "source": "browser",
+      "method": "POST",
+      "path": "/api/tasks",
+      "status": 201,
+      "requestId": "9cf26e5e-4b30-44c4-b332-9074c38608dc"
+    },
+    {
+      "source": "browser",
+      "method": "GET",
+      "path": "/api/tasks/0c68d03e-cf23-42b8-a58c-c739d3367243",
+      "status": 200,
+      "requestId": "69a6a6e7-99b5-454b-bd10-a1c6107a2bc9"
+    },
+    {
+      "source": "browser",
+      "method": "PUT",
+      "path": "/api/tasks/0c68d03e-cf23-42b8-a58c-c739d3367243",
+      "status": 200,
+      "requestId": "0c325b4e-229c-46e9-934b-d8d30f0671ad"
+    },
+    {
+      "source": "node",
+      "method": "GET",
+      "path": "/api/tasks/0c68d03e-cf23-42b8-a58c-c739d3367243",
+      "status": 200,
+      "requestId": "b62a3a87-5099-4ed7-9b50-94a985bf4bbb"
+    },
+    {
+      "source": "browser",
+      "method": "PUT",
+      "path": "/api/tasks/0c68d03e-cf23-42b8-a58c-c739d3367243",
+      "status": 200,
+      "requestId": "6c193bbc-d5bf-4efc-be46-de734f2e93aa"
+    },
+    {
+      "source": "browser",
+      "method": "PUT",
+      "path": "/api/tasks/0c68d03e-cf23-42b8-a58c-c739d3367243",
+      "status": 200,
+      "requestId": "cc01fc2b-73de-4b32-90d3-6cd50d4750bc"
+    },
+    {
+      "source": "browser",
+      "method": "GET",
+      "path": "/api/tasks",
+      "status": 200,
+      "requestId": "ca606571-53fe-41ae-8d63-7a2d5d2c7695"
+    },
+    {
+      "source": "browser",
+      "method": "PUT",
+      "path": "/api/tasks/0c68d03e-cf23-42b8-a58c-c739d3367243",
+      "status": 200,
+      "requestId": "58c599d9-4cf9-4eae-b05d-3c405c5e2c21"
+    },
+    {
+      "source": "browser",
+      "method": "DELETE",
+      "path": "/api/tasks/0c68d03e-cf23-42b8-a58c-c739d3367243",
+      "status": 200,
+      "requestId": "ef869c76-96a6-4d7c-8c9d-7bb79abe9a61"
+    },
+    {
+      "source": "node",
+      "method": "GET",
+      "path": "/api/tasks/0c68d03e-cf23-42b8-a58c-c739d3367243",
+      "status": 404,
+      "requestId": "dda9fd59-3965-41a7-bed4-c4ee00cce6d5"
+    },
+    {
+      "source": "node",
+      "method": "GET",
+      "path": "/api/openapi.json",
+      "status": 200,
+      "requestId": "e77de72a-38d9-4384-9cad-c862015f4cb7"
+    },
+    {
+      "source": "browser",
+      "method": "GET",
+      "path": "/api/tasks",
+      "status": 200,
+      "requestId": "1523e816-079c-4c88-8b73-b3ac534ac977"
+    },
+    {
+      "source": "browser",
+      "method": "GET",
+      "path": "/api/docs/",
+      "status": 200,
+      "requestId": "40d1ae25-121f-4e59-bd6a-1de57acd6dc8"
+    },
+    {
+      "source": "browser",
+      "method": "GET",
+      "path": "/api/docs/swagger-ui-init.js",
+      "status": 200,
+      "requestId": "49bf0257-8f35-4bd4-b700-4eee77169501"
+    },
+    {
+      "source": "browser",
+      "method": "GET",
+      "path": "/api/docs/swagger-ui.css",
+      "status": 200,
+      "requestId": "e5588611-aef4-4e40-9e9c-1670d3b7746b"
+    },
+    {
+      "source": "browser",
+      "method": "GET",
+      "path": "/api/docs/swagger-ui-standalone-preset.js",
+      "status": 200,
+      "requestId": "d37a9fc2-4126-4fae-bdc0-4028380536a0"
+    },
+    {
+      "source": "browser",
+      "method": "GET",
+      "path": "/api/docs/swagger-ui-bundle.js",
+      "status": 200,
+      "requestId": "3a6ffc0f-481d-477d-a36c-beb8a8bfc320"
+    },
+    {
+      "source": "browser",
+      "method": "GET",
+      "path": "/api/tasks",
+      "status": 200,
+      "requestId": "a5496e88-8e63-485e-ba98-0a67fcb4bcb8"
+    }
+  ],
+  "pageErrors": [],
+  "cleanup": {
+    "ownedTaskId": "0c68d03e-cf23-42b8-a58c-c739d3367243",
+    "removed": true
+  },
+  "finishedAt": "2026-10-08T16:11:43.453Z"
+}
