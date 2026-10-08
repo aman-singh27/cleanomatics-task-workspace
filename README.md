@@ -2,6 +2,8 @@
 
 A full-stack task manager built for the Cleanomatics developer assignment. Create, inspect, edit, and delete tasks in a responsive workspace using blue, navy, and off-white surfaces inspired by the company palette. Every task operation uses the Express REST API.
 
+Repository: [aman-singh27/cleanomatics-task-workspace](https://github.com/aman-singh27/cleanomatics-task-workspace). The public repository has been created; source publication is pending. **Hosted frontend, API and Swagger URLs are pending deployment and verification.** See the [deployment guide](docs/DEPLOYMENT.md) for configuration and acceptance checks.
+
 ## Run locally
 
 Use Node.js **22.12 or newer** and npm. From the repository root:
@@ -19,7 +21,7 @@ Environment files are optional for the default local setup. Copy `backend/.env.e
 
 - Dashboard with task descriptions, dates, status, priority, and live summary metrics.
 - Change status directly in each task row or mobile card; summary counts and filtered results update after saving.
-- Select All tasks, In progress, or Completed through the dashboard metrics.
+- Select All tasks, In progress, Completed, or Overdue through the dashboard metrics. Overdue shows unfinished tasks with a due date before today; it does not add a stored task status.
 - Five-field create/edit forms with accessible validation, complete task details drawer, and named delete confirmation.
 - Debounced search across title and description, combined status/priority filters, created-date/priority/due-date sorting, and pagination.
 - Desktop table and mobile task cards, light/dark themes, keyboard-accessible dialogs, and reduced-motion support.
@@ -27,11 +29,25 @@ Environment files are optional for the default local setup. Copy `backend/.env.e
 - Unknown-page recovery, a render-error fallback, and privacy/terms pages describing this evaluation demo.
 - Centralized REST error handling, request validation, configured CORS, and OpenAPI documentation.
 
+All seven assignment bonuses are implemented:
+
+| Bonus            | Behavior                                                                        |
+| ---------------- | ------------------------------------------------------------------------------- |
+| Search           | Matches task title and description, case-insensitively                          |
+| Filters          | Combines status and priority; summary shortcuts reset search, priority and page |
+| Sorting          | Created date, priority, and due date; tasks without due dates sort last         |
+| Pagination       | Six tasks per page, with page reset/clamping after filtering or deletion        |
+| Dark mode        | Light/dark toggle with a saved theme preference                                 |
+| Debounced search | Applies search after 300ms without another keystroke                            |
+| API tooling      | Interactive Swagger UI and a machine-readable OpenAPI specification             |
+
+For operational review, the API returns a generated `X-Request-Id`, uses privacy-safe JSON request logs, sends browser security headers, and marks task/health responses `Cache-Control: no-store`. Logs contain request ID, method, redacted route, status and duration; task contents, query values and raw headers are excluded. Production logging can be disabled with `REQUEST_LOGGING=false`. Shutdown drains accepted requests for up to ten seconds before closing remaining connections.
+
 ## Storage behavior
 
 **Tasks live only in backend memory.** There is no database, Firebase, browser task persistence, or disk task persistence. All changes disappear when the backend restarts. By default, the server starts with example operations tasks. Set `SEED_DEMO_DATA=false` for an empty workspace. A restart with demo seeding enabled restores the examples, not previously created tasks. Only the theme preference is saved in browser localStorage.
 
-No authentication is included because the assignment does not require it. This small demo is designed for local evaluation; a later public deployment will retain the same reset-on-restart constraint.
+No authentication is included because the assignment does not require it. A public demo shares one task collection across visitors and retains the reset-on-restart constraint. Run the backend as one Node process and one instance. The planned Render free service sleeps after 15 minutes without inbound traffic and can take about a minute to wake; backend memory is lost when the process stops. See [Render's free-service limits](https://render.com/docs/free).
 
 ## Verify
 
@@ -67,14 +83,14 @@ backend/src/
   controllers/   HTTP request/response handling
   services/      In-memory task store and demo seeds
   validation/    Input shape, enums, length and calendar-date checks
-  middleware/    Central JSON error handling
+  middleware/    JSON errors, request IDs, safe logs and response headers
 e2e/             Browser tests against real Express API
 docs/            Plan, independent review, requirements, brand and API notes
 ```
 
 The frontend obtains the task array from `GET /api/tasks` and performs search, filtering, sorting, and pagination locally. This keeps the assignment's REST contract straightforward and suits its small in-memory dataset. The list is reconciled after every successful mutation. Single-task details use `GET /api/tasks/:id`.
 
-In development Vite proxies `/api` to Express. `API_PROXY_TARGET` changes that proxy target. `VITE_API_URL` can specify a separate backend API base, including `/api`, for a later hosted frontend. For separate origins, set backend `CORS_ORIGINS` to the exact frontend origins.
+In development Vite proxies `/api` to Express. `API_PROXY_TARGET` changes that development proxy target. Hosted routing uses a Vercel external rewrite from `/api/:path*` to the Render backend's `/api/:path*`, keeping browser requests on the frontend origin. The actual Render destination is pending configuration. `VITE_API_URL` defaults to `/api`; a separate API base must also include `/api`. Set backend `CORS_ORIGINS` to exact allowed frontend origins. See the [deployment guide](docs/DEPLOYMENT.md).
 
 ## API
 
@@ -92,4 +108,4 @@ See [API documentation](docs/API.md), Swagger at `/api/docs`, and the machine-re
 
 Start with the [manual review guide](docs/MANUAL-REVIEW.md). The [requirements matrix](docs/REQUIREMENTS.md) traces assignment requirements; the [verification report](docs/VERIFICATION.md) records executed checks and screenshots. [Brand research](docs/BRAND-RESEARCH.md) records observed company design cues. The app uses an original identity illustration and interface; no company assets are copied.
 
-This repository is prepared locally for evaluation. Publishing to GitHub, hosting on Vercel/Render, and employer submission are intentionally deferred until the owner's manual review.
+GitHub publication and hosting are now authorized and being prepared. The employer requested the GitHub link by **9 October 2026, end of day**. The [submission checklist](docs/SUBMISSION-CHECKLIST.md) maps the document's deliverables. Local verification evidence is recorded separately from hosted checks; hosted acceptance has not yet been claimed.
