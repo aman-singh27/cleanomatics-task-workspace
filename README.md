@@ -116,4 +116,23 @@ GitHub source and both services are published. The employer requested the GitHub
 
 [Dark desktop](output/playwright/desktop-dark.png) · [Mobile](output/playwright/mobile-light.png) · [Dark mobile](output/playwright/mobile-dark.png) · [Task details](output/playwright/task-details.png) · [Mobile task form](output/playwright/mobile-form.png)
 
-Refresh the screenshots with `npm run screenshots` after starting the default local frontend. For a different port or the hosted demo, set `PREVIEW_URL` before running that command. Hosted smoke checks can be repeated with `node scripts/verify-deployment.mjs --live-url https://cleanomatics-task-workspace.vercel.app --api-url https://cleanomatics-task-api.onrender.com/api`; they create and remove only their own uniquely identified test task.
+Create a task with title, description, status, priority and due date:
+
+![Create task form](output/playwright/workflows/02-create-task.png)
+
+Edit the task's fields before saving:
+
+![Edit task form](output/playwright/workflows/04-edit-task.png)
+
+The [full screenshot gallery](output/playwright/README.md) follows validation, creation, editing, inline status changes, search/filtering, overdue tasks, pagination, mobile editing, deletion, Swagger and page recovery. All images are stored in this repository.
+
+Refresh the six overview screenshots with `npm run screenshots`, or the workflow gallery with `npm run screenshots:workflows`, after starting the default local frontend at `http://127.0.0.1:5173`. Set `PREVIEW_URL` for a different port or the hosted demo. The workflow capture uses real REST CRUD on one temporary sample task and removes only its own task ID during cleanup.
+
+For example, capture the hosted workflows in PowerShell:
+
+```powershell
+$env:PREVIEW_URL = 'https://cleanomatics-task-workspace.vercel.app'
+npm run screenshots:workflows
+```
+
+Hosted smoke checks can be repeated with `node scripts/verify-deployment.mjs --live-url https://cleanomatics-task-workspace.vercel.app --api-url https://cleanomatics-task-api.onrender.com/api`; they create and remove only their own uniquely identified test task.

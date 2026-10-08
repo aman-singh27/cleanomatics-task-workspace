@@ -19,7 +19,8 @@
     "check": "npm run typecheck && npm run build && npm run test:coverage && npm run test:e2e",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "screenshots": "node scripts/capture-screenshots.mjs"
+    "screenshots": "node scripts/capture-screenshots.mjs",
+    "screenshots:workflows": "node scripts/capture-workflows.mjs"
   },
   "overrides": {
     "shell-quote": "^1.12.0"

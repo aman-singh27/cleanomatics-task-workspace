@@ -1,0 +1,26 @@
+{
+  "baseURL": "https://cleanomatics-task-workspace.vercel.app",
+  "startedAt": "2026-10-08T19:11:23.825Z",
+  "screenshots": [
+    "01-form-validation.png",
+    "02-create-task.png",
+    "03-task-created.png",
+    "04-edit-task.png",
+    "05-task-updated.png",
+    "06-status-in-progress.png",
+    "07-task-completed.png",
+    "08-search-and-filters.png",
+    "09-overdue-queue.png",
+    "10-pagination.png",
+    "11-mobile-edit.png",
+    "12-delete-confirmation.png",
+    "13-task-deleted.png",
+    "14-no-matching-tasks.png",
+    "15-swagger-api.png",
+    "16-page-not-found.png"
+  ],
+  "pageErrors": [],
+  "cleanup": true,
+  "status": "passed",
+  "finishedAt": "2026-10-08T19:11:41.724Z"
+}

@@ -11,7 +11,7 @@ Source checked again on 8 October 2026: `Full_Stack_Developer_Assignment_Task_Ma
 | API endpoint documentation                        | README endpoint table, `docs/API.md`, `backend/API.md`                                                            | Complete; documentation and API links included                                                             |
 | Postman collection **or** Swagger documentation   | `backend/openapi.json`, runtime `/api/openapi.json`, interactive `/api/docs/`                                     | Complete; hosted verifier confirmed hosted rendering/Execute GET; separate Postman collection not required |
 | `.env.example` if variables used                  | Backend and frontend examples published; live env files ignored; actual hosted routing/origin configured          | Complete                                                                                                   |
-| Screenshots **or** short demo video               | Six PNGs in `output/playwright/`; capture script                                                                  | Complete; six hosted screenshots refreshed after verifier cleanup                                          |
+| Screenshots **or** short demo video               | 22 PNGs in `output/playwright/`; overview and workflow capture scripts                                            | Complete; six overview and 16 real workflow screenshots with gallery                                       |
 
 The document does **not** specify an email recipient, subject line, reply template, upload form, repository naming convention or firm submission deadline. Its “2–3 days” is suggested. The employer email asks for the GitHub link by **9 October 2026, end of day**. Reply formatting comes from that email; no private address or transcript is included here.
 
@@ -39,7 +39,7 @@ All seven bonus capabilities were present before hosting work began. The optiona
 | Hosted Swagger    | [Swagger](https://cleanomatics-task-workspace.vercel.app/api/docs/) — rendering and Execute GET 200 verified               |
 | OpenAPI JSON      | [Specification](https://cleanomatics-task-api.onrender.com/api/openapi.json)                                               |
 | README            | [Setup and architecture](https://github.com/aman-singh27/cleanomatics-task-workspace/blob/main/README.md)                  |
-| Screenshots       | [Six screenshots](https://github.com/aman-singh27/cleanomatics-task-workspace/tree/main/output/playwright)                 |
+| Screenshots       | [Screenshot gallery](https://github.com/aman-singh27/cleanomatics-task-workspace/tree/main/output/playwright#readme)       |
 
 These are real published links. The first hosted run exposed `/api/docs/` returning SPA HTML. Commit `74b5f3e` adds an exact trailing-slash rewrite before the API wildcard; the final hosted run passed all 14 groups, including Swagger rendering and Execute GET 200. Verification records 149 passing local checks and [successful CI for 74b5f3e](https://github.com/aman-singh27/cleanomatics-task-workspace/actions/runs/37806687947). See [DEPLOYMENT.md](DEPLOYMENT.md) for actual Render TCP health versus blueprint HTTP health.
 
