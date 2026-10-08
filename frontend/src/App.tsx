@@ -148,7 +148,7 @@ export default function App() {
             <span className="today">{today}</span>
             <span className="workspace-indicator">
               <span />
-              Personal workspace
+              Shared demo
             </span>
           </div>
         </header>

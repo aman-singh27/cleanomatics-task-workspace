@@ -612,8 +612,8 @@ try {
       }
       const docs = await context.newPage();
       observe(docs);
-      await docs.goto(`${apiBase}/docs/`, { timeout: 90_000 });
-      await expect(docs.locator(".swagger-ui")).toBeVisible();
+      await docs.goto(new URL("/api/docs/", live).href, { timeout: 90_000 });
+      await expect(docs.locator(".swagger-ui").first()).toBeVisible();
       const operationCount = Object.values(json.paths).reduce(
         (count, path) =>
           count +
@@ -631,6 +631,23 @@ try {
         0,
       );
       await expect(docs.locator(".opblock")).toHaveCount(operationCount);
+      const listOperation = docs.locator("#operations-Tasks-listTasks");
+      await listOperation.locator(".opblock-summary").click();
+      await listOperation.getByRole("button", { name: "Try it out" }).click();
+      const executed = docs.waitForResponse(
+        (response) =>
+          response.request().method() === "GET" &&
+          new URL(response.url()).pathname === "/api/tasks",
+      );
+      await listOperation
+        .getByRole("button", { name: "Execute", exact: true })
+        .click();
+      const executedResponse = await executed;
+      assert.equal(executedResponse.status(), 200);
+      assert.ok(Array.isArray(await executedResponse.json()));
+      await expect(
+        listOperation.locator(".responses-inner .live-responses-table"),
+      ).toBeVisible();
       await docs.close();
     },
   );

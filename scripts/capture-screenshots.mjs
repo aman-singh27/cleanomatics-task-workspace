@@ -1,7 +1,7 @@
 import { mkdir } from "node:fs/promises";
 import { chromium } from "@playwright/test";
 
-const baseURL = process.env.PREVIEW_URL || "http://127.0.0.1:5175";
+const baseURL = process.env.PREVIEW_URL || "http://127.0.0.1:5173";
 const directory = "output/playwright";
 await mkdir(directory, { recursive: true });
 const browser = await chromium.launch();

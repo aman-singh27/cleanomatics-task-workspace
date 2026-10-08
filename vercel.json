@@ -6,6 +6,10 @@
   "outputDirectory": "frontend/dist",
   "rewrites": [
     {
+      "source": "/api/docs/",
+      "destination": "https://cleanomatics-task-api.onrender.com/api/docs/"
+    },
+    {
       "source": "/api/:path*",
       "destination": "https://cleanomatics-task-api.onrender.com/api/:path*"
     },
