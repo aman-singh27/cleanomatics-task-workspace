@@ -197,7 +197,7 @@ describe("workspace journeys", () => {
     await user.keyboard("{Escape}");
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
-  it("paginates, sorts, changes priority, and uses working navigation", async () => {
+  it("paginates, sorts, changes priority, and uses dashboard shortcuts", async () => {
     const records = Array.from({ length: 8 }, (_, i) => ({
       ...fixture,
       id: String(i),
@@ -232,10 +232,6 @@ describe("workspace journeys", () => {
     expect(
       await screen.findByRole("button", { name: "View task Task 2" }),
     ).toBeVisible();
-    await user.click(screen.getByRole("button", { name: "Open navigation" }));
-    expect(
-      screen.getByRole("button", { name: "Open navigation" }),
-    ).toHaveAttribute("aria-expanded", "true");
     await user.click(screen.getByRole("button", { name: /In progress 1/ }));
     expect(
       await screen.findByRole("button", { name: "View task Task 1" }),

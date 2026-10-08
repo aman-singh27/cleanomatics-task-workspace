@@ -79,6 +79,7 @@ export default function App() {
       if (
         event.key === "/" &&
         !modal &&
+        !navOpen &&
         !["INPUT", "TEXTAREA", "SELECT"].includes(
           (event.target as HTMLElement)?.tagName,
         )
@@ -91,7 +92,7 @@ export default function App() {
     };
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
-  }, [modal]);
+  }, [modal, navOpen]);
   async function onSave(values: TaskInput, id?: string) {
     await save(values, id);
     setModal(null);
@@ -134,6 +135,7 @@ export default function App() {
               className="mobile-menu icon-button"
               aria-label="Open navigation"
               aria-expanded={navOpen}
+              aria-controls="workspace-navigation"
               onClick={() => setNavOpen(true)}
             >
               <Menu size={20} />
@@ -150,7 +152,7 @@ export default function App() {
             </span>
           </div>
         </header>
-        <main id="main">
+        <main id="main" tabIndex={-1}>
           <Overview
             tasks={tasks}
             loading={loading}

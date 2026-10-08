@@ -75,7 +75,7 @@ All locally implementable required and bonus items passed the final check on 8 O
 - B07, D03-D04: `backend/openapi.json`, `backend/src/openapi.js`, `docs/API.md`, and the OpenAPI parity test. Swagger runs at `/api/docs`.
 - D02, D05: root README, both `.env.example` files, and the documented environment configuration.
 - D06: six captures in `output/playwright/`; desktop/mobile light/dark, details, and a mobile form.
-- U01-U04: `BRAND-RESEARCH.md`, `PLAN.md`, `PLAN-REVIEW.md`, `CODE-REVIEW.md`, `FINAL-UX-REVIEW.md`, and `VERIFICATION.md` in this directory.
+- U01-U04: `BRAND-RESEARCH.md`, `PLAN.md`, `PLAN-REVIEW.md`, `CODE-REVIEW.md`, `FINAL-UX-REVIEW.md`, `FINAL-COMPLETENESS-AUDIT.md`, and `VERIFICATION.md` in this directory.
 
 ## Subsequent user requests
 

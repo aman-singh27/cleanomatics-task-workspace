@@ -1,4 +1,5 @@
 import { ArrowUpRight, Moon, Sun, X, Droplets, BookOpen } from "lucide-react";
+import { useEffect, useRef } from "react";
 import { apiDocsUrl } from "../api/tasks";
 import type { Task } from "../lib/tasks";
 export function Sidebar({
@@ -14,6 +15,61 @@ export function Sidebar({
   open: boolean;
   onClose: () => void;
 }) {
+  const navigation = useRef<HTMLElement>(null);
+  const close = useRef(onClose);
+  close.current = onClose;
+  useEffect(() => {
+    if (!open) return;
+    const mobile = window.matchMedia("(max-width: 850px)");
+    if (!mobile.matches) {
+      close.current();
+      return;
+    }
+    const node = navigation.current!;
+    const opener = document.querySelector<HTMLElement>(
+      '[aria-controls="workspace-navigation"]',
+    );
+    const background = document.querySelector<HTMLElement>(".main-shell");
+    const previouslyInert = background?.inert ?? false;
+    const previousOverflow = document.body.style.overflow;
+    if (background) background.inert = true;
+    document.body.style.overflow = "hidden";
+    const controls = () =>
+      Array.from(
+        node.querySelectorAll<HTMLElement>("button:not([disabled]),a[href]"),
+      ).filter((item) => item.getClientRects().length > 0);
+    controls()[0]?.focus();
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        close.current();
+      } else if (event.key === "Tab") {
+        const items = controls();
+        const first = items[0];
+        const last = items[items.length - 1];
+        if (
+          !node.contains(document.activeElement) ||
+          (!event.shiftKey && document.activeElement === last) ||
+          (event.shiftKey && document.activeElement === first)
+        ) {
+          event.preventDefault();
+          (event.shiftKey ? last : first)?.focus();
+        }
+      }
+    };
+    const resize = () => {
+      if (!mobile.matches) close.current();
+    };
+    document.addEventListener("keydown", handleKey);
+    mobile.addEventListener("change", resize);
+    return () => {
+      document.removeEventListener("keydown", handleKey);
+      mobile.removeEventListener("change", resize);
+      if (background) background.inert = previouslyInert;
+      document.body.style.overflow = previousOverflow;
+      if (mobile.matches && opener?.isConnected) opener.focus();
+    };
+  }, [open]);
   const pending = tasks.filter((task) => task.status === "pending").length;
   const highPriority = tasks.filter(
     (task) => task.priority === "high" && task.status !== "completed",
@@ -24,9 +80,14 @@ export function Sidebar({
         className={`nav-backdrop ${open ? "visible" : ""}`}
         aria-label="Close navigation"
         onClick={onClose}
-        tabIndex={open ? 0 : -1}
+        tabIndex={-1}
       />
-      <aside className={`sidebar ${open ? "open" : ""}`}>
+      <aside
+        ref={navigation}
+        id="workspace-navigation"
+        aria-label="Workspace navigation"
+        className={`sidebar ${open ? "open" : ""}`}
+      >
         <div className="brand">
           <div className="brand-mark">
             <Droplets size={25} />

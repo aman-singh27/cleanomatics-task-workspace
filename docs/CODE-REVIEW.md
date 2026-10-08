@@ -60,6 +60,8 @@ The breakpoint hides `.created-date` and its table heading. The 600px breakpoint
 
 ## Nonblocking observations
 
+**Fresh completeness follow-up:** Both observations below are resolved. Source is formatted with Prettier. The dedicated API client now validates successful collection/task/deletion contracts before state changes, safely normalizes null/malformed errors, and rejects mismatched GET/PUT identities and invalid calendar values. See `FINAL-COMPLETENESS-AUDIT.md` and the refreshed `VERIFICATION.md` for source review and executed regressions.
+
 - Frontend files compress whole components/hooks into very long lines. Normal formatting would make state, event flow, accessibility attributes, and future reviews easier to maintain. This does not change runtime behavior.
 - API success responses are cast without runtime shape checks; invalid JSON is converted to `{}` at `frontend/src/api/tasks.ts:8`. A malformed successful response can consequently fail rendering rather than enter the existing recoverable error state. Consider rejecting invalid JSON and validating minimal successful shapes, particularly the task-array response.
 

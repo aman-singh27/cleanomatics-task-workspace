@@ -216,6 +216,7 @@ export function TaskList(props: Props) {
                   <div>
                     <button
                       className="task-title"
+                      id={`task-title-${task.id}`}
                       aria-label={`View task ${task.title}`}
                       disabled={pendingStatusIds.has(task.id)}
                       onClick={() => onView(task)}
@@ -248,6 +249,7 @@ export function TaskList(props: Props) {
                   <button
                     className="icon-button"
                     aria-label="Edit task"
+                    aria-describedby={`task-title-${task.id}`}
                     disabled={pendingStatusIds.has(task.id)}
                     title={`Edit ${task.title}`}
                     onClick={() => onEdit(task)}
@@ -257,6 +259,7 @@ export function TaskList(props: Props) {
                   <button
                     className="icon-button delete-action"
                     aria-label="Delete task"
+                    aria-describedby={`task-title-${task.id}`}
                     disabled={pendingStatusIds.has(task.id)}
                     title={`Delete ${task.title}`}
                     onClick={() => onDelete(task)}

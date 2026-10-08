@@ -639,3 +639,229 @@ test("dashboard metrics reset pagination even when selecting current status", as
       .getByRole("button", { name: /All tasks|In progress|Completed/ }),
   ).toHaveCount(0);
 });
+
+test("mobile navigation contains keyboard focus and returns it after every close path", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  const opener = page.getByRole("button", { name: "Open navigation" });
+  await opener.focus();
+  await page.keyboard.press("Enter");
+  const menu = page.getByRole("complementary");
+  await expect(
+    menu.getByRole("button", { name: "Close navigation" }),
+  ).toBeFocused();
+  for (let index = 0; index < 10; index++) {
+    await page.keyboard.press("Tab");
+    expect(
+      await menu.evaluate((node) => node.contains(document.activeElement)),
+    ).toBe(true);
+  }
+  await page.keyboard.press("/");
+  expect(
+    await menu.evaluate((node) => node.contains(document.activeElement)),
+  ).toBe(true);
+  await page.keyboard.press("Escape");
+  await expect(menu).not.toBeVisible();
+  await expect(opener).toBeFocused();
+  await opener.click();
+  await menu.getByRole("button", { name: "Close navigation" }).click();
+  await expect(opener).toBeFocused();
+  await opener.click();
+  await page.locator(".nav-backdrop").click({ position: { x: 370, y: 500 } });
+  await expect(menu).not.toBeVisible();
+  await expect(opener).toBeFocused();
+  await opener.click();
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await expect(opener).not.toBeVisible();
+  await expect(page.locator(".main-shell")).not.toHaveAttribute("inert");
+  await expect(
+    page.getByRole("button", { name: "New task", exact: true }).first(),
+  ).toBeEnabled();
+});
+
+test("remaining controls support cancel, close, clear, shortcuts, details-delete and API docs", async ({
+  page,
+  request,
+  context,
+}) => {
+  const task = await (
+    await request.post(`${api}/tasks`, { data: sample })
+  ).json();
+  await page.goto("/");
+  await openCreate(page);
+  const dialog = page.getByRole("dialog");
+  await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
+  await expect(dialog).not.toBeVisible();
+  await openCreate(page);
+  await dialog.getByRole("button", { name: "Close dialog" }).click();
+  await expect(dialog).not.toBeVisible();
+  await openCreate(page);
+  await page.locator(".overlay").click({ position: { x: 10, y: 10 } });
+  await expect(dialog).not.toBeVisible();
+  await page.keyboard.press("/");
+  await expect(
+    page.getByRole("searchbox", { name: "Search tasks" }),
+  ).toBeFocused();
+  await page.getByRole("searchbox").fill("does-not-match-any-task");
+  await expect(
+    page.getByRole("button", { name: "Clear filters" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Clear filters" }).click();
+  await expect(page.getByTestId("task-row")).toHaveCount(1);
+  await page.getByLabel("Sort tasks").selectOption("created-asc");
+  await page.getByLabel("Sort tasks").selectOption("due-desc");
+  const docsPagePromise = context.waitForEvent("page");
+  await page.getByRole("link", { name: "API documentation" }).click();
+  const docsPage = await docsPagePromise;
+  await expect(
+    docsPage.getByRole("heading", { name: /Task.*API/ }),
+  ).toBeVisible();
+  await docsPage
+    .getByRole("button", { name: "GET /api/tasks List all tasks", exact: true })
+    .click();
+  await docsPage
+    .getByRole("button", { name: "Try it out", exact: true })
+    .click();
+  const docsResponse = docsPage.waitForResponse(
+    (response) =>
+      response.url().endsWith("/api/tasks") &&
+      response.request().method() === "GET",
+  );
+  await docsPage.getByRole("button", { name: "Execute", exact: true }).click();
+  expect((await docsResponse).status()).toBe(200);
+  await docsPage.close();
+  await page.getByRole("button", { name: `View task ${sample.title}` }).click();
+  await dialog
+    .getByRole("button", { name: "Delete task", exact: true })
+    .click();
+  await dialog.getByRole("button", { name: "Keep task", exact: true }).click();
+  await expect(dialog).not.toBeVisible();
+  expect((await request.get(`${api}/tasks/${task.id}`)).status()).toBe(200);
+  await page.getByRole("button", { name: `View task ${sample.title}` }).click();
+  await dialog
+    .getByRole("button", { name: "Delete task", exact: true })
+    .click();
+  await dialog
+    .getByRole("button", { name: "Delete task", exact: true })
+    .click();
+  await expect(page.getByText("Task deleted.", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Dismiss notification" }).click();
+  await expect(
+    page.getByText("Task deleted.", { exact: true }),
+  ).not.toBeVisible();
+  await page
+    .getByRole("region", { name: "Tasks", exact: true })
+    .getByRole("button", { name: "New task" })
+    .click();
+  await expect(dialog).toBeVisible();
+  await dialog.getByRole("button", { name: "Cancel" }).click();
+  expect((await request.get(`${api}/tasks/${task.id}`)).status()).toBe(404);
+  await page.reload();
+  await page.keyboard.press("Tab");
+  await expect(page.getByRole("link", { name: "Skip to tasks" })).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(page.locator("#main")).toBeFocused();
+});
+
+test("invalid successful API responses stay recoverable in list, details and forms", async ({
+  page,
+  request,
+}) => {
+  await page.route("**/api/tasks", (route) =>
+    route.request().method() === "GET"
+      ? route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: "null",
+        })
+      : route.continue(),
+  );
+  await page.goto("/");
+  await expect(
+    page.getByRole("heading", { name: "Tasks could not be loaded" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Something went wrong" }),
+  ).not.toBeVisible();
+  await page.unroute("**/api/tasks");
+  await page.getByRole("button", { name: "Retry" }).click();
+  await expect(
+    page.getByRole("heading", { name: "No tasks yet" }),
+  ).toBeVisible();
+  await openCreate(page);
+  const dialog = page.getByRole("dialog");
+  await dialog.getByLabel("Title", { exact: true }).fill(sample.title);
+  await dialog
+    .getByLabel("Description", { exact: true })
+    .fill(sample.description);
+  await page.route("**/api/tasks", (route) =>
+    route.request().method() === "POST"
+      ? route.fulfill({
+          status: 201,
+          contentType: "application/json",
+          body: '{"id":"incomplete"}',
+        })
+      : route.continue(),
+  );
+  await dialog
+    .getByRole("button", { name: "Create task", exact: true })
+    .click();
+  await expect(dialog.getByRole("alert")).toContainText("invalid response");
+  await expect(dialog.getByLabel("Title", { exact: true })).toHaveValue(
+    sample.title,
+  );
+  await page.unroute("**/api/tasks");
+  await dialog
+    .getByRole("button", { name: "Create task", exact: true })
+    .click();
+  await expect(dialog).not.toBeVisible();
+  const task = (await (await request.get(`${api}/tasks`)).json())[0];
+  await page.route(`**/api/tasks/${task.id}`, (route) =>
+    route.request().method() === "GET"
+      ? route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: "{}",
+        })
+      : route.continue(),
+  );
+  await page.getByRole("button", { name: `View task ${sample.title}` }).click();
+  await expect(dialog.getByRole("alert")).toContainText("invalid response");
+  await page.unroute(`**/api/tasks/${task.id}`);
+  await dialog.getByRole("button", { name: "Retry" }).click();
+  await expect(dialog.getByText(task.id, { exact: true })).toBeVisible();
+});
+
+test("render failure recovery buttons retry safely and reload the healthy workspace", async ({
+  page,
+}) => {
+  const appModule = "**/src/App.tsx*";
+  await page.route(appModule, (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: "application/javascript",
+      body: 'export default function App() { throw new Error("Controlled render failure"); }',
+    }),
+  );
+  await page.goto("/");
+  await expect(
+    page.getByRole("heading", { name: "Something went wrong" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Try again", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "Something went wrong" }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("Controlled render failure", { exact: true }),
+  ).not.toBeVisible();
+  await page.unroute(appModule);
+  await page.getByRole("button", { name: "Reload page", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "Operations tasks" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Something went wrong" }),
+  ).not.toBeVisible();
+});

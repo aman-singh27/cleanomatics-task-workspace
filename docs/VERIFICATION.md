@@ -7,10 +7,10 @@ Verified on 8 October 2026 on Windows using Node.js 22.17.0 and npm 10.9.2. This
 | Check                              | Result                                                                                       |
 | ---------------------------------- | -------------------------------------------------------------------------------------------- |
 | `npm run check`                    | Passed: TypeScript, production build, coverage suites and browser tests                      |
-| Frontend Vitest                    | 37 tests passed across seven suites                                                          |
+| Frontend Vitest                    | 71 tests passed across seven suites                                                          |
 | Backend Vitest/Supertest           | 47 integration tests passed                                                                  |
-| Playwright Chromium                | 14 end-to-end scenarios passed against real isolated Express/Vite servers                    |
-| Frontend reported coverage         | Statements 94.54%, branches 88.92%, functions 94.73%, lines 95.70%                           |
+| Playwright Chromium                | 18 end-to-end scenarios passed against real isolated Express/Vite servers                    |
+| Frontend reported coverage         | Statements 87.85%, branches 83.41%, functions 91.44%, lines 89.02%                           |
 | Backend reported coverage          | 100% statements, branches, functions and lines across nine files; startup bootstrap excluded |
 | Coverage thresholds                | All configured 80% gates passed                                                              |
 | `npm run format:check`             | Passed                                                                                       |
@@ -22,7 +22,7 @@ The production build completed successfully. The GitHub Actions workflow is prep
 
 ## Browser coverage
 
-The 14 scenarios cover:
+The 18 scenarios cover:
 
 1. Required fields and complete real API create, details, edit and delete.
 2. Debounced title/description search, combined filters, sorting and pagination.
@@ -38,6 +38,10 @@ The 14 scenarios cover:
 12. Flat computed surfaces, no panel shadows/gradients, restrained radii and real completion progress.
 13. Inline status saves preserve other fields, block duplicate/conflicting actions, expose failures/retry, update metrics/filter membership and work on mobile.
 14. Selecting the current status metric resets pagination and status shortcuts are absent from the sidebar.
+15. Mobile navigation focus entry, Tab containment, Escape, close button/backdrop, focus return and desktop-resize cleanup.
+16. Remaining controls: form Cancel/X/backdrop, clear filters, search shortcut, additional sort options, documentation popup and real Swagger Execute, details-delete cancel/confirm, toast dismissal, empty-state New task and Skip to tasks.
+17. Invalid successful HTTP responses produce recoverable list, form and details errors; retry succeeds without losing form values.
+18. Controlled rendering failure keeps diagnostics private; Try again remains safe and Reload page restores the healthy workspace.
 
 E2E runs its own empty store at ports 4001/5174, then stops those test servers. It does not mutate the manual preview's port-4000 data. Controlled delays and failure interception exercise recovery; successful CRUD uses the actual Express backend.
 
@@ -46,6 +50,10 @@ E2E runs its own empty store at ports 4001/5174, then stops those test servers. 
 Integration tests verify exact task fields/enums, defaults, real calendar dates, null due dates, required trimming/length/type validation, malformed JSON, oversized payloads, unknown fields, generated UUID/timestamps, immutable identity/creation timestamp, correct 200/201/400/404/413/500 responses, centralized safe JSON errors, CORS/preflight, isolated memory stores and OpenAPI parity.
 
 Frontend tests exercise selection/date logic, REST calls/errors, task loading/mutation races, validation, modal focus, status-save state, unknown-page recovery and error-boundary retry. The final independent review found and closed pagination reset, stale edit during status save and focus-stealing issues. See [source review](CODE-REVIEW.md) and [daily-use review](FINAL-UX-REVIEW.md).
+
+The user's fresh completeness request triggered a second extraction of the original DOCX and an independent [exact-document/control audit](FINAL-COMPLETENESS-AUDIT.md). That audit confirmed every locally implementable required and bonus item, and found two additional robustness/accessibility gaps. Both are fixed: successful API bodies are validated before entering state (including matching GET/PUT identities and real dates), and mobile navigation now manages keyboard focus and background interaction. Row Edit/Delete also expose their task title as an accessible description.
+
+The final revision passed **136 tests total: 71 frontend, 47 backend and 18 browser scenarios**. All five assignment API operations were exercised; every application control is mapped in the independent audit. The live port-5175 preview was additionally inspected in the Codex browser: empty-form validation, close/focus return, navigation opening focus and Escape/focus return were observed directly. User preview task records were preserved. Refreshed screenshots again reported no page errors or mobile overflow.
 
 ## Screenshots inspected
 
